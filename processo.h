@@ -5,3 +5,5 @@ typedef struct {
     struct tm *horaCriada;
     int prior;
 } TProcesso;
+
+TProcesso inicializaProcesso();
