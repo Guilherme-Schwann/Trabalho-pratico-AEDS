@@ -3,5 +3,6 @@ project(TP1 C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(TP1 main.c processo.c)
-add_executable(hora hora.c)
+set(SOURCE_FILES main.c processo.h processo.c)
+
+add_executable(main ${SOURCE_FILES})
