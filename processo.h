@@ -1,4 +1,17 @@
-// TAD processo:
+/*
+ * TAD Processo
+*/
+
+// Includes e Defines
+#include <stdlib.h>
+#include <time.h>
+#include <stdio.h>
+#include <string.h>
+#define MIN_PRIORIDADE 1
+#define MAX_PRIORIDADE 5
+#define MIN_PID 1000
+#define MAX_PID 9999
+
 typedef struct {
     int pid;
     char horaCriada[21];
@@ -7,6 +20,7 @@ typedef struct {
 
 // Função inicializadora:
 TProcesso inicializaProcesso();
+TProcesso registraHorario(TProcesso* processo);
 
 // Gets e sets:
 int getPid(TProcesso processo);
@@ -21,3 +35,7 @@ int getPrior(TProcesso processo);
 
 void setPrior(TProcesso* processo, int novaPrior);
 
+/* Funções randomizadoras (clareza) */
+
+void cria_semente();
+int gera_numero_entre(unsigned int numero_min, unsigned int numero_max);
