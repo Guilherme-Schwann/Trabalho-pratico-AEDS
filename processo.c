@@ -9,7 +9,7 @@
 TProcesso inicializaProcesso() {
     TProcesso processo;
 
-    //registra a hora na qual o processo foi criado:
+    // Registra a hora na qual o processo foi criado:
     time_t instante = time(NULL);
     struct tm *tempoInfo = localtime(&instante);
 

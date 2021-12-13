@@ -3,6 +3,6 @@ project(TP1 C)
 
 set(CMAKE_C_STANDARD 99)
 
-set(SOURCE_FILES main.c processo.h processo.c)
+set(SOURCE_FILES main.c processo.h processo.c listaDeProcessos.h listaDeProcessos.c)
 
 add_executable(main ${SOURCE_FILES})
