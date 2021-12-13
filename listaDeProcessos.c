@@ -1,21 +1,22 @@
-#include <stdlib.h>
-#include <stdio.h>
+/*
+ * Implementação das funções do TAD Lista de Processos
+*/
+
 #include "listaDeProcessos.h"
 
-void inicializaCelulasDisp(TListaDeProcessos* plista);
-
-void evitarRepeticao(TListaDeProcessos* plista, TProcesso* processo);
-
-void ordenaLista(TListaDeProcessos* plista);
-
+// Inicialização da lista
 void inicializaLista(TListaDeProcessos* plista, int N) {
-    plista->listaDeProcessos = (Celula*) malloc(sizeof(Celula) * N);
+    plista->listaDeProcessos = (Celula*) malloc(sizeof(Celula) * N); // Aloca memória
     plista->primeiro = 0;
     plista->ultimo = 0;
     plista->maxTam = N;
     plista->numCelOcupadas = 0;
     plista->celulasDisp = 0;
     inicializaCelulasDisp(plista);
+}
+
+void imprimeConteudo(TListaDeProcessos* plista) {
+
 }
 
 int posOcupadas(TListaDeProcessos* plista) {
@@ -44,12 +45,11 @@ void retiraPrimeiro(TListaDeProcessos* plista) {
     plista->numCelOcupadas -= 1;
 }
 
-void imprimeConteudo(TListaDeProcessos* plista) {
-
-}
+/* Miscelânea */
 
 void inicializaCelulasDisp(TListaDeProcessos* plista) {
     int i;
+    
     for (i = 0; i < plista->maxTam; i++) {
         if (i == plista->maxTam - 1) {
             plista->listaDeProcessos[i].prox = -1;
@@ -61,13 +61,18 @@ void inicializaCelulasDisp(TListaDeProcessos* plista) {
     }
 }
 
+// Prevenção de PIDs repetidos na lista de processos
 void evitarRepeticao(TListaDeProcessos* plista, TProcesso* processo) {
     int i;
     Celula *vendocelula = &(plista->listaDeProcessos[plista->primeiro]);
+
+    // Percorre toda a lista para verificação
     for (i = 0; i < plista->numCelOcupadas; i++) {
+        // Um único elemento:
         if (vendocelula->processo.pid == processo->pid) {
             setPid(processo, processo->pid + 1);
         }
+        // Passa para o próximo elemento:
         vendocelula = &(plista->listaDeProcessos[vendocelula->prox]);
     }
 }
