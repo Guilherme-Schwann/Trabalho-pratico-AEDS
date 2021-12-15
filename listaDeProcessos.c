@@ -16,7 +16,12 @@ void inicializaLista(TListaDeProcessos* plista, int N) {
 }
 
 void imprimeConteudo(TListaDeProcessos* plista) {
-
+    int i;
+    Celula *vendocelula = &(plista->listaDeProcessos[plista->primeiro]);
+    for (i = 0; i < plista->numCelOcupadas; i++) {
+        getConteudo(vendocelula->processo);
+        vendocelula = &(plista->listaDeProcessos[vendocelula->prox]);
+    }
 }
 
 int posOcupadas(TListaDeProcessos* plista) {
@@ -25,18 +30,35 @@ int posOcupadas(TListaDeProcessos* plista) {
 
 void insereDado(TListaDeProcessos* plista, TProcesso processo) {
     evitarRepeticao(plista, &processo);
+    int posterior, anterior;
     plista->listaDeProcessos[plista->celulasDisp].processo = processo;
     if (plista->numCelOcupadas > 0) {
-        plista->listaDeProcessos[plista->ultimo].prox = plista->celulasDisp;
-        plista->listaDeProcessos[plista->celulasDisp].ant = plista->ultimo;
-        plista->ultimo = plista->celulasDisp;
+        if (plista->listaDeProcessos[plista->primeiro].processo.pid > processo.pid) {
+            posterior = plista->primeiro;
+            plista->primeiro = plista->celulasDisp;
+            plista->celulasDisp = plista->listaDeProcessos[plista->celulasDisp].prox;
+            plista->listaDeProcessos[plista->primeiro].prox = posterior;
+        } else {
+            anterior = achaAnterior(plista, processo, &plista->listaDeProcessos[plista->primeiro]);
+            posterior = plista->listaDeProcessos[anterior].prox;
+            if (posterior != -1) {
+                plista->listaDeProcessos[posterior].ant = plista->listaDeProcessos[anterior].prox;
+            } else {
+                plista->ultimo = plista->listaDeProcessos[anterior].prox;
+            }
+            plista->listaDeProcessos[anterior].prox = plista->celulasDisp;
+            plista->listaDeProcessos[plista->celulasDisp].ant = anterior;
+            plista->celulasDisp = plista->listaDeProcessos[plista->celulasDisp].prox;
+            plista->listaDeProcessos[plista->listaDeProcessos[anterior].prox].prox = posterior;
+        }
+    } else {
+        plista->celulasDisp = plista->listaDeProcessos[plista->celulasDisp].prox;
+        plista->listaDeProcessos[plista->celulasDisp].prox = -1;
     }
-    plista->celulasDisp = plista->listaDeProcessos[plista->celulasDisp].prox;
-    plista->listaDeProcessos[plista->ultimo].prox = -1;
     plista->numCelOcupadas++;
-    ordenaLista(plista);
 }
 
+// consertar:
 void retiraPrimeiro(TListaDeProcessos* plista) {
     plista->primeiro = plista->listaDeProcessos[plista->primeiro].prox;
     plista->listaDeProcessos[plista->listaDeProcessos[plista->primeiro].ant].prox = plista->celulasDisp;
@@ -61,6 +83,12 @@ void inicializaCelulasDisp(TListaDeProcessos* plista) {
     }
 }
 
+void getConteudo(TProcesso processo) {
+    getPid(processo);
+    getHora(processo);
+    getPrior(processo);
+}
+
 // Prevenção de PIDs repetidos na lista de processos
 void evitarRepeticao(TListaDeProcessos* plista, TProcesso* processo) {
     int i;
@@ -74,6 +102,15 @@ void evitarRepeticao(TListaDeProcessos* plista, TProcesso* processo) {
         }
         // Passa para o próximo elemento:
         vendocelula = &(plista->listaDeProcessos[vendocelula->prox]);
+    }
+}
+
+int achaAnterior(TListaDeProcessos* plista, TProcesso processo, Celula* vendoCelula) {
+    if (vendoCelula->processo.pid < processo.pid) {
+        return plista->listaDeProcessos[vendoCelula->ant].prox;
+    }
+    else {
+        return achaAnterior(plista, processo, &(plista->listaDeProcessos[vendoCelula->prox]));
     }
 }
 

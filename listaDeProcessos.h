@@ -29,6 +29,8 @@ int posOcupadas(TListaDeProcessos* plista);
 
 void inicializaCelulasDisp(TListaDeProcessos* plista);
 void evitarRepeticao(TListaDeProcessos* plista, TProcesso* processo);
+int achaAnterior(TListaDeProcessos* plista, TProcesso processo, Celula* vendoCelula);
+void getConteudo(TProcesso processo);
 void ordenaLista(TListaDeProcessos* plista);
 
 /* Inserção e Remoção */
