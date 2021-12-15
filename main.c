@@ -1,4 +1,4 @@
-//para testar a implementaC'C#o dos seu TAD, voce devera implementar um 
+//para testar a implementacao dos seu TAD, voce devera implementar um 
 //programa principal que simula a gerencia de uma lista de processos feita pelo sistema operacional 
 //este deve possuir as funcionalidade de:
 //- Inicializacao da lista de processos;
