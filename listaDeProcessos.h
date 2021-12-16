@@ -1,29 +1,33 @@
 /*
  * TAD Lista De Processos
- * Fudeu
 */
 
 #include "processo.h"
 
+typedef int cursor;
+
 typedef struct {
     TProcesso processo;
-    int prox;
-    int ant;
+    cursor prox, ant;
 } Celula;
 
 typedef struct {
     Celula* listaDeProcessos;
-    int primeiro;
-    int ultimo;
-    int maxTam;
-    int numCelOcupadas;
-    int celulasDisp; // Cursor
+    cursor primeiro, ultimo,celulasDisp;
+    int maxTam, numCelOcupadas;
 } TListaDeProcessos;
 
-/* Inicialização e Impressão */
+/* Inicialização e verificação de posições ocupadas */
 void inicializaLista(TListaDeProcessos* plista, int N);
-void imprimeConteudo(TListaDeProcessos* plista);
 int posOcupadas(TListaDeProcessos* plista);
+
+
+/* Inserção, Remoção e impressão do conteúdo */
+
+void insereDado(TListaDeProcessos* plista, TProcesso processo);
+void retiraPrimeiro(TListaDeProcessos* plista);
+// void retiraUltimo();
+void imprimeConteudo(TListaDeProcessos* plista);
 
 /* Miscelânea */
 
@@ -31,12 +35,5 @@ void inicializaCelulasDisp(TListaDeProcessos* plista);
 void evitarRepeticao(TListaDeProcessos* plista, TProcesso* processo);
 int achaAnterior(TListaDeProcessos* plista, TProcesso processo, Celula* vendoCelula);
 void getConteudo(TProcesso processo);
-void ordenaLista(TListaDeProcessos* plista);
+// void ordenaLista(TListaDeProcessos* plista);
 
-/* Inserção e Remoção */
-
-void insereDado(TListaDeProcessos* plista, TProcesso processo);
-
-void retiraPrimeiro(TListaDeProcessos* plista);
-
-// void retiraUltimo();

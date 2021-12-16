@@ -25,9 +25,10 @@
 
 
 #include <stdio.h>
-#include "processo.h"
+#include <stdlib.h>
+#include "listaDeProcessos.h"
 
 int main() {
-
+    
     return 0;
 }

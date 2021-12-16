@@ -29,42 +29,46 @@ int posOcupadas(TListaDeProcessos* plista) {
 }
 
 void insereDado(TListaDeProcessos* plista, TProcesso processo) {
-    evitarRepeticao(plista, &processo);
-    int posterior, anterior;
-    plista->listaDeProcessos[plista->celulasDisp].processo = processo;
-    if (plista->numCelOcupadas > 0) {
-        if (plista->listaDeProcessos[plista->primeiro].processo.pid > processo.pid) {
-            posterior = plista->primeiro;
-            plista->primeiro = plista->celulasDisp;
-            plista->celulasDisp = plista->listaDeProcessos[plista->celulasDisp].prox;
-            plista->listaDeProcessos[plista->primeiro].prox = posterior;
-        } else {
-            anterior = achaAnterior(plista, processo, &plista->listaDeProcessos[plista->primeiro]);
-            posterior = plista->listaDeProcessos[anterior].prox;
-            if (posterior != -1) {
-                plista->listaDeProcessos[posterior].ant = plista->listaDeProcessos[anterior].prox;
+    if (plista->numCelOcupadas < plista->maxTam) {
+        evitarRepeticao(plista, &processo);
+        int posterior, anterior;
+        plista->listaDeProcessos[plista->celulasDisp].processo = processo;
+        if (plista->numCelOcupadas > 0) {
+            if (plista->listaDeProcessos[plista->primeiro].processo.pid > processo.pid) {
+                posterior = plista->primeiro;
+                plista->primeiro = plista->celulasDisp;
+                plista->celulasDisp = plista->listaDeProcessos[plista->celulasDisp].prox;
+                plista->listaDeProcessos[plista->primeiro].prox = posterior;
             } else {
-                plista->ultimo = plista->listaDeProcessos[anterior].prox;
+                anterior = achaAnterior(plista, processo, &plista->listaDeProcessos[plista->primeiro]);
+                posterior = plista->listaDeProcessos[anterior].prox;
+                if (posterior != -1) {
+                    plista->listaDeProcessos[posterior].ant = plista->listaDeProcessos[anterior].prox;
+                } else {
+                    plista->ultimo = plista->listaDeProcessos[anterior].prox;
+                }
+                plista->listaDeProcessos[anterior].prox = plista->celulasDisp;
+                plista->listaDeProcessos[plista->celulasDisp].ant = anterior;
+                plista->celulasDisp = plista->listaDeProcessos[plista->celulasDisp].prox;
+                plista->listaDeProcessos[plista->listaDeProcessos[anterior].prox].prox = posterior;
             }
-            plista->listaDeProcessos[anterior].prox = plista->celulasDisp;
-            plista->listaDeProcessos[plista->celulasDisp].ant = anterior;
+        } else {
+            plista->listaDeProcessos[plista->celulasDisp].prox = -1;
             plista->celulasDisp = plista->listaDeProcessos[plista->celulasDisp].prox;
-            plista->listaDeProcessos[plista->listaDeProcessos[anterior].prox].prox = posterior;
         }
-    } else {
-        plista->celulasDisp = plista->listaDeProcessos[plista->celulasDisp].prox;
-        plista->listaDeProcessos[plista->celulasDisp].prox = -1;
+        plista->numCelOcupadas++;
     }
-    plista->numCelOcupadas++;
 }
 
 // consertar:
 void retiraPrimeiro(TListaDeProcessos* plista) {
-    plista->primeiro = plista->listaDeProcessos[plista->primeiro].prox;
-    plista->listaDeProcessos[plista->listaDeProcessos[plista->primeiro].ant].prox = plista->celulasDisp;
-    plista->celulasDisp = plista->listaDeProcessos[plista->primeiro].ant;
-    plista->listaDeProcessos[plista->primeiro].ant = -1;
-    plista->numCelOcupadas -= 1;
+    if (plista->numCelOcupadas > 0){
+        plista->primeiro = plista->listaDeProcessos[plista->primeiro].prox;
+        plista->listaDeProcessos[plista->listaDeProcessos[plista->primeiro].ant].prox = plista->celulasDisp;
+        plista->celulasDisp = plista->listaDeProcessos[plista->primeiro].ant;
+        plista->listaDeProcessos[plista->primeiro].ant = -1;
+        plista->numCelOcupadas -= 1;
+    }
 }
 
 /* Miscelânea */
@@ -114,6 +118,7 @@ int achaAnterior(TListaDeProcessos* plista, TProcesso processo, Celula* vendoCel
     }
 }
 
+/*
 void ordenaLista(TListaDeProcessos* plista) {
     int i, j;
     TProcesso temporario;
@@ -130,3 +135,4 @@ void ordenaLista(TListaDeProcessos* plista) {
         vendocelula = &(plista->listaDeProcessos[plista->primeiro]);
     }
 }
+ */
