@@ -3,19 +3,20 @@
 #include "listaDeProcessos.h"
 
 int main() {
-    TProcesso processo[10];
+    TProcesso processo[100];
     TListaDeProcessos lista;
-    inicializaLista(&lista, 10);
-    for (int i = 0; i < 10; i++) {
+    inicializaLista(&lista, 100);
+    for (int i = 0; i < 100; i++) {
         processo[i] = inicializaProcesso();
         insereDado(&lista, processo[i]);
         imprimeConteudo(&lista);
-        printf("\n");
+        printf("----------------------------------------------------------------------------\n");
     }
-    printf("-----------------------\n");
-    for (int i = 0; i < 10; i++) {
+printf("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
+    for (int i = 0; i < 102; i++) {
         retiraPrimeiro(&lista);
         imprimeConteudo(&lista);
+        printf("----------------------------------------------------------------------------\n");
     }
     return 0;
 }
