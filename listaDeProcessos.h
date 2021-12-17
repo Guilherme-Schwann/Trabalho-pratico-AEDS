@@ -28,12 +28,3 @@ void insereDado(TListaDeProcessos* plista, TProcesso processo);
 void retiraPrimeiro(TListaDeProcessos* plista);
 // void retiraUltimo();
 void imprimeConteudo(TListaDeProcessos* plista);
-
-/* Miscelânea */
-
-void inicializaCelulasDisp(TListaDeProcessos* plista);
-void evitarRepeticao(TListaDeProcessos* plista, TProcesso* processo);
-int achaAnterior(TListaDeProcessos* plista, TProcesso processo, Celula* vendoCelula);
-void getConteudo(TProcesso processo);
-// void ordenaLista(TListaDeProcessos* plista);
-

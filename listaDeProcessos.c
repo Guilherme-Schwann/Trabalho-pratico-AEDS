@@ -4,6 +4,10 @@
 
 #include "listaDeProcessos.h"
 
+void inicializaCelulasDisp(TListaDeProcessos* plista);
+int achaAnterior(TListaDeProcessos* plista, TProcesso processo, Celula* vendoCelula);
+void getConteudo(TProcesso processo);
+
 // Inicialização da lista
 void inicializaLista(TListaDeProcessos* plista, int N) {
     plista->listaDeProcessos = (Celula*) malloc(sizeof(Celula) * N); // Aloca memória
@@ -13,19 +17,6 @@ void inicializaLista(TListaDeProcessos* plista, int N) {
     plista->numCelOcupadas = 0;
     plista->celulasDisp = 0;
     inicializaCelulasDisp(plista);
-}
-
-void imprimeConteudo(TListaDeProcessos* plista) {
-    if (plista->numCelOcupadas > 0) {
-        int i;
-        Celula *vendocelula = &(plista->listaDeProcessos[plista->primeiro]);
-        for (i = 0; i < plista->numCelOcupadas; i++) {
-            getConteudo(vendocelula->processo);
-            printf("ant: %d | prox: %d\n", vendocelula->ant, vendocelula->prox);
-            if (vendocelula->prox != -1)
-                vendocelula = &(plista->listaDeProcessos[vendocelula->prox]);
-        }
-    }
 }
 
 int posOcupadas(TListaDeProcessos* plista) {
@@ -82,6 +73,19 @@ void retiraPrimeiro(TListaDeProcessos* plista) {
     plista->numCelOcupadas -= 1;
 }
 
+void imprimeConteudo(TListaDeProcessos* plista) {
+    if (plista->numCelOcupadas > 0) {
+        int i;
+        Celula *vendocelula = &(plista->listaDeProcessos[plista->primeiro]);
+        for (i = 0; i < plista->numCelOcupadas; i++) {
+            getConteudo(vendocelula->processo);
+            printf("ant: %d | prox: %d\n", vendocelula->ant, vendocelula->prox);
+            if (vendocelula->prox != -1)
+                vendocelula = &(plista->listaDeProcessos[vendocelula->prox]);
+        }
+    }
+}
+
 /* Miscelânea */
 
 void inicializaCelulasDisp(TListaDeProcessos* plista) {
@@ -95,28 +99,6 @@ void inicializaCelulasDisp(TListaDeProcessos* plista) {
             plista->listaDeProcessos[i].ant = -1;
             plista->listaDeProcessos[i].prox = i+1;
         }
-    }
-}
-
-void getConteudo(TProcesso processo) {
-    getPid(processo);
-    getHora(processo);
-    getPrior(processo);
-}
-
-// Prevenção de PIDs repetidos na lista de processos
-void evitarRepeticao(TListaDeProcessos* plista, TProcesso* processo) {
-    int i;
-    Celula *vendocelula = &(plista->listaDeProcessos[plista->primeiro]);
-
-    // Percorre toda a lista para verificação
-    for (i = 0; i < plista->numCelOcupadas; i++) {
-        // Um único elemento:
-        if (vendocelula->processo.pid == processo->pid) {
-            setPid(processo, processo->pid + 1);
-        }
-        // Passa para o próximo elemento:
-        vendocelula = &(plista->listaDeProcessos[vendocelula->prox]);
     }
 }
 
@@ -136,21 +118,8 @@ int achaAnterior(TListaDeProcessos* plista, TProcesso processo, Celula* vendoCel
     }
 }
 
-/*
-void ordenaLista(TListaDeProcessos* plista) {
-    int i, j;
-    TProcesso temporario;
-    Celula *vendocelula = &(plista->listaDeProcessos[plista->primeiro]);
-    for (i = 0; i < plista->numCelOcupadas; i++) {
-        for (j = 0; j < plista->numCelOcupadas - 1; j++){
-            if (vendocelula->processo.pid > plista->listaDeProcessos[vendocelula->prox].processo.pid) {
-                temporario = vendocelula->processo;
-                vendocelula->processo = plista->listaDeProcessos[vendocelula->prox].processo;
-                plista->listaDeProcessos[vendocelula->prox].processo = temporario;
-            }
-            vendocelula = &(plista->listaDeProcessos[vendocelula->prox]);
-        }
-        vendocelula = &(plista->listaDeProcessos[plista->primeiro]);
-    }
+void getConteudo(TProcesso processo) {
+    getPid(processo);
+    getHora(processo);
+    getPrior(processo);
 }
- */
