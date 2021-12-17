@@ -53,10 +53,8 @@ TProcesso inicializaProcesso() {
 }
 
 // Gets e Sets:
-int getPid(TProcesso processo) {
-    int pid;
-    pid = processo.pid;
-    return pid;
+void getPid(TProcesso processo) {
+    printf("PID: %d\n", processo.pid);
 }
 
 void setPid(TProcesso* processo, int novoPid) {
@@ -72,10 +70,8 @@ void setHora(TProcesso* processo, char hora[21]) {
     strcpy(processo->horaCriada, hora);
 }
 
-int getPrior(TProcesso processo) {
-    int prior;
-    prior = processo.prior;
-    return prior;
+void getPrior(TProcesso processo) {
+    printf("Prioridade: %d\n", processo.prior);
 }
 
 void setPrior(TProcesso* processo, int novaPrior) {

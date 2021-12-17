@@ -20,6 +20,7 @@ void imprimeConteudo(TListaDeProcessos* plista) {
     Celula *vendocelula = &(plista->listaDeProcessos[plista->primeiro]);
     for (i = 0; i < plista->numCelOcupadas; i++) {
         getConteudo(vendocelula->processo);
+        printf("ant: %d | prox: %d\n", vendocelula->ant, vendocelula->prox);
         vendocelula = &(plista->listaDeProcessos[vendocelula->prox]);
     }
 }
@@ -42,12 +43,12 @@ void insereDado(TListaDeProcessos* plista, TProcesso processo) {
             } else {
                 anterior = achaAnterior(plista, processo, &plista->listaDeProcessos[plista->primeiro]);
                 posterior = plista->listaDeProcessos[anterior].prox;
+                plista->listaDeProcessos[anterior].prox = plista->celulasDisp;
                 if (posterior != -1) {
                     plista->listaDeProcessos[posterior].ant = plista->listaDeProcessos[anterior].prox;
                 } else {
                     plista->ultimo = plista->listaDeProcessos[anterior].prox;
                 }
-                plista->listaDeProcessos[anterior].prox = plista->celulasDisp;
                 plista->listaDeProcessos[plista->celulasDisp].ant = anterior;
                 plista->celulasDisp = plista->listaDeProcessos[plista->celulasDisp].prox;
                 plista->listaDeProcessos[plista->listaDeProcessos[anterior].prox].prox = posterior;
@@ -56,7 +57,7 @@ void insereDado(TListaDeProcessos* plista, TProcesso processo) {
             plista->listaDeProcessos[plista->celulasDisp].prox = -1;
             plista->celulasDisp = plista->listaDeProcessos[plista->celulasDisp].prox;
         }
-        plista->numCelOcupadas++;
+        plista->numCelOcupadas += 1;
     }
 }
 
@@ -75,7 +76,7 @@ void retiraPrimeiro(TListaDeProcessos* plista) {
 
 void inicializaCelulasDisp(TListaDeProcessos* plista) {
     int i;
-    
+
     for (i = 0; i < plista->maxTam; i++) {
         if (i == plista->maxTam - 1) {
             plista->listaDeProcessos[i].prox = -1;
@@ -111,7 +112,10 @@ void evitarRepeticao(TListaDeProcessos* plista, TProcesso* processo) {
 
 int achaAnterior(TListaDeProcessos* plista, TProcesso processo, Celula* vendoCelula) {
     if (vendoCelula->processo.pid < processo.pid) {
-        return plista->listaDeProcessos[vendoCelula->ant].prox;
+        if (vendoCelula->ant != -1)
+            return plista->listaDeProcessos[vendoCelula->ant].prox;
+        else
+            return plista->primeiro;
     }
     else {
         return achaAnterior(plista, processo, &(plista->listaDeProcessos[vendoCelula->prox]));

@@ -20,10 +20,9 @@ typedef struct {
 
 // Função inicializadora:
 TProcesso inicializaProcesso();
-TProcesso registraHorario(TProcesso* processo);
 
 // Gets e sets:
-int getPid(TProcesso processo);
+void getPid(TProcesso processo);
 
 void setPid(TProcesso* processo, int novoPid);
 
@@ -31,11 +30,6 @@ void getHora(TProcesso processo);
 
 void setHora(TProcesso* processo, char hora[21]);
 
-int getPrior(TProcesso processo);
+void getPrior(TProcesso processo);
 
 void setPrior(TProcesso* processo, int novaPrior);
-
-/* Funções randomizadoras (clareza) */
-
-void cria_semente();
-int gera_numero_entre(unsigned int numero_min, unsigned int numero_max);
