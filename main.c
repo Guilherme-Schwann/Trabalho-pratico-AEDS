@@ -28,7 +28,29 @@
 #include <stdlib.h>
 #include "listaDeProcessos.h"
 
-int main() {
+void leArquivo();
+void manualmente();
 
+int main() {
+    int menu = 0;
+    printf("Escolha qual operacao sera feita: (1: manualmente // 2: por arquivo)\n");
+    while (menu != 1 && menu != 2) {
+        scanf("%d", &menu);
+    }
+    if (menu == 1) {
+        manualmente();
+    } else {
+        leArquivo();
+    }
     return 0;
+}
+
+void manualmente() {
+    char nomeArquivo[25];
+    printf("Insira o nome do arquivo: ");
+}
+
+void leArquivo() {
+    char nomeArquivo[25];
+    printf("Insira o nome do arquivo: ");
 }
