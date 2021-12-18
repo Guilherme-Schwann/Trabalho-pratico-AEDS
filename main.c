@@ -27,49 +27,33 @@
 
 void criacao_auto();
 void criacao_manual();
-char le_arquivo();
+char escolhe_arquivo();
 void realiza_operacoes(TListaDeProcessos* lista, TProcesso* processo1, unsigned int Op, unsigned int Qt);
 
 int main() {
     int menu = 0;
-    clock_t start, end;
-    FILE *output;
+    int repetir = 0;
 
-    start = clock();
-
-    printf("Escolha um tipo de criacao de lista:\n");
-    printf("1: Criacao Manual | 2: Criação Automatica");
-
-    while (menu != 1 && menu != 2)
+    do
     {
-        scanf("%d", &menu);
+        printf("Escolha um tipo de criacao de lista:\n");
+        printf("1: Criacao Manual | 2: Criação Automatica");
+
+        while (menu != 1 && menu != 2)
+        {
+            scanf("%d", &menu);
+        }
+        if (menu == 1)
+        {
+            criacao_manual();
+        }
+        else
+        {
+            criacao_auto();
+        }
+
     }
-    if (menu == 1)
-    {
-        criacao_manual();
-    }
-    else
-    {
-        criacao_auto();
-    }
-
-    end = clock();
-    double tempo_total = (end - start) / CLOCKS_PER_SEC;
-
-    int num_teste = 0; /* Ainda não sei como implementa isso */
-
-    // Registra a tabela em um arquivo
-
-    output = fopen(output, "r+");
-    if (output == NULL)
-    {
-        printf("Erro na abertura do arquivo de saída.\n");
-        exit(1);
-    }
-
-
-    fseek(output, 0, SEEK_END);
-    fprintf("%d %f", num_teste, tempo_total);
+    while (!repetir);
 
     return 0;
 }
@@ -89,7 +73,7 @@ void realiza_operacoes(TListaDeProcessos* lista, TProcesso* processo1, unsigned 
     }
 }
 
-char le_arquivo()
+char escolhe_arquivo()
 {
     char nomeArquivo[25];
     printf("Insira o nome do arquivo (com .txt): ");
@@ -136,15 +120,18 @@ void criacao_manual()
 void criacao_auto()
 {
     // Declarações 
-    char arquivo = le_arquivo();
+    char arquivo = escolhe_arquivo();
     TListaDeProcessos lista;
     TProcesso *processo1;
     posicao N; // Tamanho do vetor, linha 1
     unsigned int NLO; // Número de linhas de operações, linha 2
     unsigned int Op; // 0 = inserção, 1 = remoção, linha 3
     unsigned int Qt; // Quantidade de vezes que a operação é realizada, linha 3
+    unsigned int num_teste;
     int i;
-    FILE *input;
+    clock_t start, end;
+    FILE *input; // Arquivo de entrada
+    FILE *output; // Arquivo de saída
 
     input = fopen(arquivo, "r");
     if (input==NULL)
@@ -161,23 +148,26 @@ void criacao_auto()
     /* Linha 2 */
     fscanf(input, "%u", &NLO); // Pega o número de linhas
 
-    for (i = 0; i <= NLO; i++)
+    for (i = 0; i <= NLO; i++)  /* Linhas seguintes */
     {
-        /* Linhas seguintes */
         fscanf(input, "%u %u", &Op, &Qt);
 
+        start = clock();
         realiza_operacoes(&lista, processo1, Op, Qt);
+        end = clock();
+        double tempo_total = (end - start) / CLOCKS_PER_SEC;
+
+        // Registra a tabela em um arquivo
+        output = fopen(output, "r+");
+        if (output == NULL)
+        {
+            printf("Erro na abertura do arquivo de saída.\n");
+            exit(1);
+        }
+
+        fseek(output, 0, SEEK_END);
+        fprintf("%d %f", num_teste, tempo_total);
     }
 
-
-    
-    // fclose(f);
-    
-    //ou leitura por arquivo entrada
-    
-    
-    
-    
- 
     imprimeConteudo(&lista);
 }
