@@ -24,7 +24,6 @@ int posOcupadas(TListaDeProcessos* plista) {
 }
 
 void insereDado(TListaDeProcessos* plista, TProcesso processo) {
-    // evitarRepeticao(plista, &processo);
     cursor posterior, anterior;
     plista->listaDeProcessos[plista->celulasDisp].processo = processo;
     if (plista->numCelOcupadas > 0) {
@@ -57,7 +56,6 @@ void insereDado(TListaDeProcessos* plista, TProcesso processo) {
     plista->numCelOcupadas += 1;
 }
 
-// consertar:
 void retiraPrimeiro(TListaDeProcessos* plista) {
     if (plista->numCelOcupadas > 1) {
         plista->primeiro = plista->listaDeProcessos[plista->primeiro].prox;
@@ -79,7 +77,7 @@ void imprimeConteudo(TListaDeProcessos* plista) {
         Celula *vendocelula = &(plista->listaDeProcessos[plista->primeiro]);
         for (i = 0; i < plista->numCelOcupadas; i++) {
             getConteudo(vendocelula->processo);
-            printf("ant: %d | prox: %d\n", vendocelula->ant, vendocelula->prox);
+            printf("ant: %d | prox: %d\n", vendocelula->ant, vendocelula->prox); //RETIRARRRR
             if (vendocelula->prox != -1)
                 vendocelula = &(plista->listaDeProcessos[vendocelula->prox]);
         }

@@ -31,5 +31,4 @@ int posOcupadas(TListaDeProcessos* plista);
 
 void insereDado(TListaDeProcessos* plista, TProcesso processo);
 void retiraPrimeiro(TListaDeProcessos* plista);
-// void retiraUltimo();
 void imprimeConteudo(TListaDeProcessos* plista);
