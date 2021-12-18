@@ -57,7 +57,7 @@ void getPid(TProcesso processo) {
     printf("PID: %d\n", processo.pid);
 }
 
-void setPid(TProcesso* processo, int novoPid) {
+void setPid(TProcesso* processo, unsigned int novoPid) {
     processo->pid = novoPid;
 }
 
@@ -74,6 +74,6 @@ void getPrior(TProcesso processo) {
     printf("Prioridade: %d\n", processo.prior);
 }
 
-void setPrior(TProcesso* processo, int novaPrior) {
+void setPrior(TProcesso* processo, unsigned int novaPrior) {
     processo->prior = novaPrior;
 }

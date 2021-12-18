@@ -5,20 +5,25 @@
 #include "processo.h"
 
 typedef int cursor;
+typedef unsigned int posicao;
 
 typedef struct {
     TProcesso processo;
-    cursor prox, ant;
+    cursor prox;
+    cursor ant;
 } Celula;
 
 typedef struct {
     Celula* listaDeProcessos;
-    cursor primeiro, ultimo,celulasDisp;
-    int maxTam, numCelOcupadas;
+    cursor primeiro;
+    cursor ultimo;
+    cursor celulasDisp;
+    posicao maxTam;
+    posicao numCelOcupadas;
 } TListaDeProcessos;
 
 /* Inicialização e verificação de posições ocupadas */
-void inicializaLista(TListaDeProcessos* plista, int N);
+void inicializaLista(TListaDeProcessos* plista, posicao N);
 int posOcupadas(TListaDeProcessos* plista);
 
 

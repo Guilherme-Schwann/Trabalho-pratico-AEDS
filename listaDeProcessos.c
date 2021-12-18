@@ -9,7 +9,7 @@ int achaAnterior(TListaDeProcessos* plista, TProcesso processo, Celula* vendoCel
 void getConteudo(TProcesso processo);
 
 // Inicialização da lista
-void inicializaLista(TListaDeProcessos* plista, int N) {
+void inicializaLista(TListaDeProcessos* plista, posicao N) {
     plista->listaDeProcessos = (Celula*) malloc(sizeof(Celula) * N); // Aloca memória
     plista->primeiro = 0;
     plista->ultimo = 0;

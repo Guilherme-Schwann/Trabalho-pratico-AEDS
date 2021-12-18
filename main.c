@@ -23,34 +23,161 @@
 //devera ser uma tabela constando o numero do teste e o tempo total de execucaoo encontrado para sua realizacao.
 //NUM_TESTE <tempo> // NC:mero do teste, valor para TAD cursores(?)
 
-
-#include <stdio.h>
-#include <stdlib.h>
 #include "listaDeProcessos.h"
 
-void leArquivo();
-void manualmente();
+void criacao_auto();
+void criacao_manual();
+char le_arquivo();
+void realiza_operacoes(TListaDeProcessos* lista, TProcesso* processo1, unsigned int Op, unsigned int Qt);
 
 int main() {
     int menu = 0;
-    printf("Escolha qual operacao sera feita: (1: manualmente // 2: por arquivo)\n");
-    while (menu != 1 && menu != 2) {
+    clock_t start, end;
+    FILE *output;
+
+    start = clock();
+
+    printf("Escolha um tipo de criacao de lista:\n");
+    printf("1: Criacao Manual | 2: Criação Automatica");
+
+    while (menu != 1 && menu != 2)
+    {
         scanf("%d", &menu);
     }
-    if (menu == 1) {
-        manualmente();
-    } else {
-        leArquivo();
+    if (menu == 1)
+    {
+        criacao_manual();
     }
+    else
+    {
+        criacao_auto();
+    }
+
+    end = clock();
+    double tempo_total = (end - start) / CLOCKS_PER_SEC;
+
+    int num_teste = 0; /* Ainda não sei como implementa isso */
+
+    // Registra a tabela em um arquivo
+
+    output = fopen(output, "r+");
+    if (output == NULL)
+    {
+        printf("Erro na abertura do arquivo de saída.\n");
+        exit(1);
+    }
+
+
+    fseek(output, 0, SEEK_END);
+    fprintf("%d %f", num_teste, tempo_total);
+
     return 0;
 }
 
-void manualmente() {
-    char nomeArquivo[25];
-    printf("Insira o nome do arquivo: ");
+void realiza_operacoes(TListaDeProcessos* lista, TProcesso* processo1, unsigned int Op, unsigned int Qt)
+{
+   if (Op == 0){
+        for(int i = 0; i < Qt; i++){
+            insereDado(lista, *processo1); 
+        }
+    }
+    
+    if (Op == 1){
+        for(int i = 0; i < Qt; i++){
+            retiraPrimeiro(lista); 
+        }
+    }
 }
 
-void leArquivo() {
+char le_arquivo()
+{
     char nomeArquivo[25];
-    printf("Insira o nome do arquivo: ");
+    printf("Insira o nome do arquivo (com .txt): ");
+    scanf("%s", &nomeArquivo);
+    return nomeArquivo;
+}
+
+void criacao_manual()
+{
+    TListaDeProcessos lista;
+    TProcesso *processo1;
+    posicao N; // Tamanho do vetor
+    unsigned int NLO; // Número de linhas de operações
+    unsigned int Op; // 0 = inserção, 1 = remoção
+    unsigned int Qt; // Quantidade de vezes que a operação é realizada
+    int i;
+
+    printf("Digite o tamanho do vetor: ");
+    scanf("%u", &N);
+
+    inicializaLista(&lista, N);
+
+    printf("Digite o numero de sequencias de operacoes que serao realizadas: ");
+    scanf("%u", &NLO);
+
+    for (i = 1; i <= NLO; i++) /* Sequências de operação */
+    {
+        printf("-***************************-\n");
+        printf("Sequencia de operacao no. %d \n", i);
+        printf("-***************************-\n");
+        printf("  Qual operacao sera feita?  \n");
+        printf("0 = Insercao      1 = Remocao\n");
+        scanf("%u", &Op);
+
+        printf("Quantas vezes a operacao sera realizada?\n");
+        scanf("%u", &Qt);
+
+        realiza_operacoes(&lista, processo1, Op, Qt);
+    }
+    
+    imprimeConteudo(&lista); // Impressão básica
+}
+
+void criacao_auto()
+{
+    // Declarações 
+    char arquivo = le_arquivo();
+    TListaDeProcessos lista;
+    TProcesso *processo1;
+    posicao N; // Tamanho do vetor, linha 1
+    unsigned int NLO; // Número de linhas de operações, linha 2
+    unsigned int Op; // 0 = inserção, 1 = remoção, linha 3
+    unsigned int Qt; // Quantidade de vezes que a operação é realizada, linha 3
+    int i;
+    FILE *input;
+
+    input = fopen(arquivo, "r");
+    if (input==NULL)
+    {
+        printf("Erro na abertura do arquivo de teste.\n");
+        exit(1); //aborta o programa
+    }
+    
+    /* Linha 1 */
+    fscanf(input, "%u", &N); // Pega o tamanho do vetor
+
+    inicializaLista(&lista, N);
+    
+    /* Linha 2 */
+    fscanf(input, "%u", &NLO); // Pega o número de linhas
+
+    for (i = 0; i <= NLO; i++)
+    {
+        /* Linhas seguintes */
+        fscanf(input, "%u %u", &Op, &Qt);
+
+        realiza_operacoes(&lista, processo1, Op, Qt);
+    }
+
+
+    
+    // fclose(f);
+    
+    //ou leitura por arquivo entrada
+    
+    
+    
+    
+ 
+    imprimeConteudo(&lista);
 }

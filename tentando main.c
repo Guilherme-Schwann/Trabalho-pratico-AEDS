@@ -1,66 +1,66 @@
-#include "listaDeProcesso.h"
-int main (){
-    TListaDeProcessos lista;
-    char nomeArquivo[30];
-    int N;
-    int NLO;
-    int Op;
-    int Qt;
-    
-    
-    FILE *f;
-    f = fopen("teste","r");
-    if (f==NULL){
-        printf("Erro na abertura!\n");
-        exit(1);//aborta o programa
-    }
-    /*possiveis funcoes para usar na leitura do arquivo
-      mas nao tenho ideia de qual e nem de como
-    
-    
-    fgetc() - ler caractere de um arquivo
-    : int fgetc(FILE *fp);
-    https://youtu.be/FwW2T3jGvdg - Linguagem C Descomplicada
+#include "listaDeProcessos.h"
 
-    fgets() - ler uma sequência de caracteres de um arquivo e armazená-la dentre de uma string
-    : int fgets(char* str,int tamanho,FILE *fp);
-    https://youtu.be/GDVPYnD-T_w - Linguagem C Descomplicada
-
-    fread() - https://youtu.be/ZxuacsaCdaI
-    : int fread(void *buffer, int bytes, int count,FILE *fp);
-    https://youtu.be/ZxuacsaCdaI - Linguagem C Descomplicada
-
-    fscanf() - permite a leitura de uma lista de dados formatados do arquivos
-    : fscanf(FILE *f,"Tipos de Entrada",variaveis);
-    // Exemplo: fscanf(arquivo,"%s %s %s %d",nome,telefone,endereco,&idade);
-    https://youtu.be/jnotzdaKjOI - Linguagem C Descomplicada
-    
-    
-    
-    */
-    
-    fclose(f);
-    
-
-    
-    //ou leitura por arquivo entrada
-    
-    inicializaLista(&lista, N);
-    
-    TProcesso *processo1;
-    
-    if (Op == 0){
+void realiza_operacoes(TListaDeProcessos* lista, TProcesso* processo1, unsigned int Op, unsigned int Qt)
+{
+   if (Op == 0){
         for(int i = 0 ; i < Qt; i++){
-            insereDado(&lista, *processo1); 
+            insereDado(lista, *processo1); 
         }
     }
     
     if (Op == 1){
         for(int i = 0 ; i < Qt; i++){
-            retiraPrimeiro(&lista); 
+            retiraPrimeiro(lista); 
         }
     }
+}
+
+int main (){
+
+    // Declarações 
+    TListaDeProcessos lista;
+    TProcesso *processo1;
+    char nome_arquivo[30];
+    posicao N; // Tamanho do vetor, linha 1
+    unsigned int NLO; // Número de linhas de operações, linha 2
+    unsigned int Op; // 0 = inserção, 1 = remoção, linha 3
+    unsigned int Qt; // Quantidade de vezes que a operação é realizada, linha 3
+    int i;
+    FILE *f;
+
+    printf("NOME DO ARQUIVO DE TESTE: ");
+
+    f = fopen("testeMoodle.txt", "r");
+    if (f==NULL)
+    {
+        printf("Erro na abertura do arquivo de teste.\n");
+        exit(1); //aborta o programa
+    }
     
+    /* Linha 1 */
+    fscanf(f, "%u", &N); // Pega o tamanho do vetor
+    inicializaLista(&lista, N);
+    /* Linha 2 */
+    fscanf(f, "%u", &NLO); // Pega o número de linhas
+
+    for (i = 0; i <= NLO; i++)
+    {
+        /* Linhas seguintes */
+        fscanf(f, "%u %u", &Op, &Qt);
+
+        realiza_operacoes(&lista, processo1, Op, Qt);
+    }
+
+
+    
+    // fclose(f);
+    
+    //ou leitura por arquivo entrada
+    
+    
+    
+    
+ 
     imprimeConteudo(&lista);
     
   return 0;
