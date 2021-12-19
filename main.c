@@ -62,6 +62,7 @@ void realiza_operacoes(TListaDeProcessos* lista, TProcesso* processo1, unsigned 
 {
    if (Op == 0){
         for(int i = 0; i < Qt; i++){
+            *processo1 = inicializaProcesso();
             insereDado(lista, *processo1); 
         }
     }
