@@ -1,35 +1,20 @@
-//para testar a implementacao dos seu TAD, voce devera implementar um 
-//programa principal que simula a gerencia de uma lista de processos feita pelo sistema operacional 
-//este deve possuir as funcionalidade de:
-//- Inicializacao da lista de processos;
-//- Insercao de novos processos na lista;
-//- Remocao de processos da lista (primeiro);
-//- Impressao da lista (na saida padrao);
-
-//devera permitir a criaca interativa de uma lista, bem como o carregamento de uma nova lista a partir de um arquivo 
-//o tamanho da lista e, portanto, definido pelo usuario
-//em seguida, devera permitir que o usuario indique o numero de insercoes ou remocoes que deseja realizar sobre a lista 
-//ou le essas informacoes do arquivo (?) efetuando tais operacoes
-//por fim, o seu sistema de testes devera medir qual o tempo gasto para a realizacao de cada teste.
-
-//arquivo entrada
-//devera possuir o seguinte formato:
-//N // Tamanho do vetor para cursores
-//NLO // NC:mero de linhas de operacoes especificadas abaixo
-//Op Qt // Op = 0 para insercao e 1 para remocao inicio
-	// Qt = quantidade de vezes que a operacao sera realizada
-
-//arquivo saida
-//devera ser uma tabela constando o numero do teste e o tempo total de execucaoo encontrado para sua realizacao.
-//NUM_TESTE <tempo> // NC:mero do teste, valor para TAD cursores(?)
+/*
+ * ----------------------
+ * main.c - Implementação
+ * ----------------------
+*/
 
 #include "listaDeProcessos.h"
 
-void criacao_auto();
+/* Declaração de funções */
 void criacao_manual();
+void criacao_por_arquivo();
+void criacao_teste();
 char escolhe_arquivo();
 void realiza_operacoes(TListaDeProcessos* lista, TProcesso* processo1, unsigned int Op, unsigned int Qt);
+void libera_lista(TListaDeProcessos* lista);
 
+/* Main */
 int main() {
     int menu = 0;
     int repetir = 0;
@@ -37,9 +22,9 @@ int main() {
     do
     {
         printf("Escolha um tipo de criacao de lista:\n");
-        printf("1: Criacao Manual | 2: Criação Automatica\n");
+        printf("1: Criacao Manual | 2: Criacao por leitura de arquivo | 3: Criacao pelos testes 1-12");
 
-        while (menu != 1 && menu != 2)
+        while (menu != 1 && menu != 2 && menu != 3)
         {
             scanf("%d", &menu);
         }
@@ -47,9 +32,13 @@ int main() {
         {
             criacao_manual();
         }
-        else
+        else if (menu == 2)
         {
-            criacao_auto();
+            criacao_por_arquivo();
+        }
+        else  // if (menu == 3)
+        {
+            criacao_teste();
         }
 
     }
@@ -91,6 +80,7 @@ void criacao_manual()
     unsigned int Op; // 0 = inserção, 1 = remoção
     unsigned int Qt; // Quantidade de vezes que a operação é realizada
     int i;
+    clock_t start, end; // Clock
 
     printf("Digite o tamanho do vetor: ");
     scanf("%u", &N);
@@ -112,13 +102,15 @@ void criacao_manual()
         printf("Quantas vezes a operacao sera realizada?\n");
         scanf("%u", &Qt);
 
+        start = clock();
         realiza_operacoes(&lista, processo1, Op, Qt);
+        end = clock();
     }
     
     imprimeConteudo(&lista); // Impressão básica
 }
 
-void criacao_auto()
+void criacao_por_arquivo()
 {
     // Declarações 
     char arquivo = escolhe_arquivo();
@@ -130,7 +122,7 @@ void criacao_auto()
     unsigned int Qt; // Quantidade de vezes que a operação é realizada, linha 3
     unsigned int num_teste;
     int i;
-    clock_t start, end;
+    clock_t start, end; // Clock
     FILE *input; // Arquivo de entrada
     FILE *output; // Arquivo de saída
 
