@@ -37,7 +37,7 @@ int main() {
     do
     {
         printf("Escolha um tipo de criacao de lista:\n");
-        printf("1: Criacao Manual | 2: Criação Automatica");
+        printf("1: Criacao Manual | 2: Criação Automatica\n");
 
         while (menu != 1 && menu != 2)
         {
