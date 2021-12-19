@@ -1,6 +1,4 @@
-/*
- * TAD Processo
-*/
+/* TAD Processo */
 
 // Includes e Defines
 #include <stdio.h>

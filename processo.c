@@ -1,4 +1,4 @@
-// Funções do TAD Processo
+/* Funções do TAD Processo */
 
 #include "processo.h"
 

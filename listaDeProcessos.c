@@ -1,28 +1,29 @@
-/*
- * Implementação das funções do TAD Lista de Processos
-*/
+/* Funções do TAD Lista de Processos */
 
 #include "listaDeProcessos.h"
 
+/* Protótipos de funções extras (miscelânea) */
 void inicializaCelulasDisp(TListaDeProcessos* plista);
 int achaAnterior(TListaDeProcessos* plista, TProcesso processo, Celula* vendoCelula);
 void getConteudo(TProcesso processo);
 
-// Inicialização da lista
+/* Inicialização da lista */
 void inicializaLista(TListaDeProcessos* plista, posicao N) {
-    plista->listaDeProcessos = (Celula*) malloc(sizeof(Celula) * N); // Aloca memória
-    plista->primeiro = 0;
-    plista->ultimo = 0;
-    plista->maxTam = N;
-    plista->numCelOcupadas = 0;
-    plista->celulasDisp = 0;
-    inicializaCelulasDisp(plista);
+    plista->listaDeProcessos = (Celula*) malloc(sizeof(Celula) * N); // Aloca memória correspondente a N celulas
+    plista->primeiro = 0; // Aponta o cursor primeiro para a posição 0
+    plista->ultimo = 0; // Aponta o cursor último para a posição 0
+    plista->maxTam = N; // Define o tamanho máximo da lista como N
+    plista->numCelOcupadas = 0; // Define o número de células ocupadas como 0
+    plista->celulasDisp = 0; // Aponta o início da lista de células disponíveis na posição 0
+    inicializaCelulasDisp(plista); // Configura os cursores das células disponíveis na lista vazia
 }
 
+/* Retorna o número de posições ocupadas na lista */
 int posOcupadas(TListaDeProcessos* plista) {
     return plista->numCelOcupadas;
 }
 
+/* Insere um dado (processo) na lista de processos, ordenadamente */
 void insereDado(TListaDeProcessos* plista, TProcesso processo) {
     cursor posterior, anterior;
     plista->listaDeProcessos[plista->celulasDisp].processo = processo;
@@ -56,6 +57,7 @@ void insereDado(TListaDeProcessos* plista, TProcesso processo) {
     plista->numCelOcupadas += 1;
 }
 
+/* Desconecta a primeira célula da lista de processos e associa-a à lista de células disponíveis */
 void retiraPrimeiro(TListaDeProcessos* plista) {
     if (plista->numCelOcupadas > 1) {
         plista->primeiro = plista->listaDeProcessos[plista->primeiro].prox;
@@ -71,6 +73,7 @@ void retiraPrimeiro(TListaDeProcessos* plista) {
     plista->numCelOcupadas -= 1;
 }
 
+/* Imprime todos os dados (processos) da lista de processos */
 void imprimeConteudo(TListaDeProcessos* plista) {
     if (plista->numCelOcupadas > 0) {
         int i;
@@ -86,6 +89,7 @@ void imprimeConteudo(TListaDeProcessos* plista) {
 
 /* Miscelânea */
 
+/* Configura as células disponíveis quando inicializa-se uma lista vazia */
 void inicializaCelulasDisp(TListaDeProcessos* plista) {
     int i;
 
@@ -100,6 +104,7 @@ void inicializaCelulasDisp(TListaDeProcessos* plista) {
     }
 }
 
+/* Encontra a célula anterior à célula a ser inserida na lista, baseada em seu PID */
 int achaAnterior(TListaDeProcessos* plista, TProcesso processo, Celula* vendoCelula) {
     int i;
     for (i = 0; i < plista->numCelOcupadas; i++) {
@@ -116,6 +121,7 @@ int achaAnterior(TListaDeProcessos* plista, TProcesso processo, Celula* vendoCel
     }
 }
 
+/* Executa todos os métodos "gets" do processo de uma célula */
 void getConteudo(TProcesso processo) {
     getPid(processo);
     getHora(processo);
