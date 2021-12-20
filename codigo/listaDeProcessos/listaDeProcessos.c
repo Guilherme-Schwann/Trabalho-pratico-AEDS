@@ -25,23 +25,32 @@ int posOcupadas(TListaDeProcessos* plista) {
 
 /* Insere um dado (processo) na lista de processos, ordenadamente */
 void insereDado(TListaDeProcessos* plista, TProcesso processo) {
-    cursor posterior, anterior;
-    plista->listaDeProcessos[plista->celulasDisp].processo = processo;
+    cursor posterior, anterior; // Apontam para a célula anterior e posterior da célula a ser inserida
+    plista->listaDeProcessos[plista->celulasDisp].processo = processo; // Define o processo a ser inserido na lista
+
+    // A lista está vazia ou contém células ocupadas?
     if (plista->numCelOcupadas > 0) {
+
+        // A célula em questão será inserida na primeira posição?
         if (processo.pid <= plista->listaDeProcessos[plista->primeiro].processo.pid) {
+            // Inserção na primeira posição da lista:
             plista->listaDeProcessos[plista->primeiro].ant = plista->celulasDisp;
             plista->celulasDisp = plista->listaDeProcessos[plista->celulasDisp].prox;
             plista->listaDeProcessos[plista->listaDeProcessos[plista->primeiro].ant].prox = plista->primeiro;
             plista->primeiro = plista->listaDeProcessos[plista->primeiro].ant;
         } else {
             anterior = achaAnterior(plista, processo, &plista->listaDeProcessos[plista->primeiro]);
+
+            // A célula em questão será inserida na última posição?
             if (plista->listaDeProcessos[anterior].prox == -1) {
+                // Inserção na última posição da lista:
                 plista->listaDeProcessos[anterior].prox = plista->celulasDisp;
                 plista->listaDeProcessos[plista->celulasDisp].ant = anterior;
                 plista->celulasDisp = plista->listaDeProcessos[plista->celulasDisp].prox;
                 plista->ultimo = plista->listaDeProcessos[anterior].prox;
                 plista->listaDeProcessos[plista->ultimo].prox = -1;
             } else {
+                // Inserção em qualquer posição no meio da lista:
                 plista->listaDeProcessos[plista->celulasDisp].ant = anterior;
                 posterior = plista->listaDeProcessos[anterior].prox;
                 plista->listaDeProcessos[anterior].prox = plista->celulasDisp;
@@ -51,6 +60,7 @@ void insereDado(TListaDeProcessos* plista, TProcesso processo) {
             }
         }
     } else {
+        // Inserção na lista vazia:
         plista->celulasDisp = plista->listaDeProcessos[plista->celulasDisp].prox;
         plista->listaDeProcessos[plista->primeiro].prox = -1;
     }
