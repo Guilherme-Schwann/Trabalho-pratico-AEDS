@@ -20,7 +20,7 @@
 void criacao_manual();
 void criacao_por_arquivo();
 void criacao_teste();
-char* escolhe_arquivo();
+void escolhe_arquivo(char* parquivo);
 char* nome_arquivo_testes(unsigned int i);
 int repetir_teste();
 void realiza_operacoes(TListaDeProcessos* lista, TProcesso* processo1, unsigned int Op, unsigned int Qt);
@@ -61,7 +61,7 @@ int main()
 // Pergunta se o usuário deseja realizar outro teste com as listas.
 int repetir_teste()
 {
-    char voce_quer;
+    char voce_quer = 'R';
     // Processo de repetição de teste
     printf("Voce quer realizar outro teste? S / N\n");
     while (voce_quer != 'S' && voce_quer != 'N')
@@ -115,12 +115,10 @@ void realiza_operacoes(TListaDeProcessos* lista, TProcesso* processo1, unsigned 
 }
 
 // Usado em criação por arquivo (2) -- TA DANDO ERRADO
-char* escolhe_arquivo()
+void escolhe_arquivo(char* parquivo)
 {
-    char *nomeArquivo;
     printf("Insira o nome do arquivo (com .txt): ");
-    scanf("%s", nomeArquivo);
-    return nomeArquivo;
+    scanf("%s", parquivo);
 }
 
 // Usado em criação de arquivos teste (3) -- TA DANDO ERRADO
@@ -161,7 +159,7 @@ char* nome_arquivo_testes(unsigned int i)
 void criacao_manual()
 {
     TListaDeProcessos lista;
-    TProcesso *processo1;
+    TProcesso processo1;
     posicao N;  // Tamanho do vetor
     unsigned int NLO;  // Número de linhas de operações
     unsigned int Op;  // 0 = inserção, 1 = remoção
@@ -191,7 +189,7 @@ void criacao_manual()
         scanf("%u", &Qt);
 
         start = clock();
-        realiza_operacoes(&lista, processo1, Op, Qt);
+        realiza_operacoes(&lista, &processo1, Op, Qt);
         end = clock();
         double tempo_total = (end - start) / CLOCKS_PER_SEC; // Guarda o tempo gasto para a realização de operações
         printf("TESTE %u | TEMPO GASTO: %f\n", num_teste, tempo_total); // Imprime o tempo gasto no console
@@ -214,7 +212,9 @@ void criacao_por_arquivo()
     clock_t start, end;  // Clock
     FILE* input;  // Arquivo de entrada
 
-    char* arquivo = escolhe_arquivo();
+    char arquivo[25];
+    char* parquivo = arquivo;
+    escolhe_arquivo(parquivo);
 
     input = fopen(arquivo, "r");
     if (input == NULL)
