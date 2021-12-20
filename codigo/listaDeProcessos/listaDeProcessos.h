@@ -1,6 +1,6 @@
 /* TAD Lista De Processos */
 
-#include "processo.h"
+#include "../processo/processo.h"
 
 typedef int cursor; // Definição do tipo "cursor"
 typedef unsigned int posicao; // Definição de um tipo inteiro independente de sinal

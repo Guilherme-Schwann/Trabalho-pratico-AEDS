@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "listaDeProcessos.h"
+#include "codigo/listaDeProcessos/listaDeProcessos.h"
 
 int main() {
     TProcesso processo[100];

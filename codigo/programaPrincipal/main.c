@@ -11,7 +11,7 @@
 */
 
 // Includes e Defines
-#include "listaDeProcessos.h"
+#include "../listaDeProcessos/listaDeProcessos.h"
 #define OP_INSERIR 0
 #define OP_REMOVER 1
 #define NUM_ARQUIVOS_TESTE 6  // teste100000, teste200000, ..., teste600000

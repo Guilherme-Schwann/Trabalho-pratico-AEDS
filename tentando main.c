@@ -1,4 +1,4 @@
-#include "listaDeProcessos.h"
+#include "codigo/listaDeProcessos/listaDeProcessos.h"
 
 void realiza_operacoes(TListaDeProcessos* lista, TProcesso* processo1, unsigned int Op, unsigned int Qt)
 {
