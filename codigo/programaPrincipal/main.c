@@ -100,7 +100,7 @@ void realiza_operacoes(TListaDeProcessos* lista, TProcesso* processo1, unsigned 
     {
         for (unsigned int i = 0; i < Qt; i++)
         {
-            if (lista->celulasDisp == 0) // Lista é vazia, não tem como fazer nenhuma remoção
+            if (lista->numCelOcupadas == 0) // Lista é vazia, não tem como fazer nenhuma remoção
             {
                 return;
             }
