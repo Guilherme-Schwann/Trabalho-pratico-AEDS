@@ -130,22 +130,22 @@ char nome_arquivo_testes(int i)
     switch (i)  /* Caso mais testes sejam criados, manutenção aqui é necessária */
     {
     case 1:
-        strcpy(nome_arquivo, "teste100000.txt");
+        strcpy(nome_arquivo, "../testes/teste100000.txt");
         break;
     case 2:
-        strcpy(nome_arquivo, "teste200000.txt");
+        strcpy(nome_arquivo, "../testes/teste200000.txt");
         break;
     case 3:
-        strcpy(nome_arquivo, "teste300000.txt");
+        strcpy(nome_arquivo, "../testes/teste300000.txt");
         break;
     case 4:
-        strcpy(nome_arquivo, "teste400000.txt");
+        strcpy(nome_arquivo, "../testes/teste400000.txt");
         break;
     case 5:
-        strcpy(nome_arquivo, "teste500000.txt");
+        strcpy(nome_arquivo, "../testes/teste500000.txt");
         break;
     case 6:
-        strcpy(nome_arquivo, "teste600000.txt");
+        strcpy(nome_arquivo, "../testes/teste600000.txt");
         break;
 
     // Caso de erro
