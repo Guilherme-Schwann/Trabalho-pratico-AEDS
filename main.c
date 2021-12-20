@@ -34,7 +34,7 @@ int main()
         int menu = 0;
 
         printf("Escolha um tipo de criacao de lista:\n");
-        printf("1: Criacao Manual | 2: Criacao por leitura de arquivo | 3: Criacao pelos testes 1-12");
+        printf("1: Criacao Manual | 2: Criacao por leitura de arquivo | 3: Criacao pelos testes 1-12\n");
 
         while (menu != 1 && menu != 2 && menu != 3)
         {
