@@ -21,7 +21,7 @@ void criacao_manual();
 void criacao_por_arquivo();
 void criacao_teste();
 void escolhe_arquivo(char* parquivo);
-char* nome_arquivo_testes(unsigned int i);
+void nome_arquivo_testes(unsigned int i, char* pnome_arquivo);
 int repetir_teste();
 void realiza_operacoes(TListaDeProcessos* lista, TProcesso* processo1, unsigned int Op, unsigned int Qt);
 void libera_lista(TListaDeProcessos* lista);
@@ -114,7 +114,7 @@ void realiza_operacoes(TListaDeProcessos* lista, TProcesso* processo1, unsigned 
     exit(1);
 }
 
-// Usado em criação por arquivo (2) -- TA DANDO ERRADO
+// Usado em criação por arquivo
 void escolhe_arquivo(char* parquivo)
 {
     printf("Insira o nome do arquivo (com .txt): ");
@@ -122,28 +122,27 @@ void escolhe_arquivo(char* parquivo)
 }
 
 // Usado em criação de arquivos teste (3) -- TA DANDO ERRADO
-char* nome_arquivo_testes(unsigned int i)
+void nome_arquivo_testes(unsigned int i, char* pnome_arquivo)
 {
-    char *nome_arquivo;
     switch (i)  /* Caso mais testes sejam criados, manutenção aqui é necessária */
     {
     case 1:
-        strcpy(nome_arquivo, "../testes/teste100000.txt");
+        strcpy(pnome_arquivo, "../testes/teste100000.txt");
         break;
     case 2:
-        strcpy(nome_arquivo, "../testes/teste200000.txt");
+        strcpy(pnome_arquivo, "../testes/teste200000.txt");
         break;
     case 3:
-        strcpy(nome_arquivo, "../testes/teste300000.txt");
+        strcpy(pnome_arquivo, "../testes/teste300000.txt");
         break;
     case 4:
-        strcpy(nome_arquivo, "../testes/teste400000.txt");
+        strcpy(pnome_arquivo, "../testes/teste400000.txt");
         break;
     case 5:
-        strcpy(nome_arquivo, "../testes/teste500000.txt");
+        strcpy(pnome_arquivo, "../testes/teste500000.txt");
         break;
     case 6:
-        strcpy(nome_arquivo, "../testes/teste600000.txt");
+        strcpy(pnome_arquivo, "../testes/teste600000.txt");
         break;
 
     // Caso de erro
@@ -151,8 +150,6 @@ char* nome_arquivo_testes(unsigned int i)
         printf("Arquivo nao existe.\n");
         exit(1);
     }
-
-    return nome_arquivo;
 }
 
 // Processo de criação de lista guiado pelo usuário (I/O padrão)
@@ -204,7 +201,7 @@ void criacao_por_arquivo()
 {
     // Declarações 
     TListaDeProcessos lista;
-    TProcesso *processo1;
+    TProcesso processo1;
     posicao N;  // Tamanho do vetor, linha 1
     unsigned int NLO;  // Número de linhas de operações, linha 2
     unsigned int Op;  // 0 = inserção, 1 = remoção, linha 3
@@ -238,7 +235,7 @@ void criacao_por_arquivo()
         fscanf(input, "%u %u", &Op, &Qt);
 
         start = clock();
-        realiza_operacoes(&lista, processo1, Op, Qt);
+        realiza_operacoes(&lista, &processo1, Op, Qt);
         end = clock();
         double tempo_total = (end - start) / CLOCKS_PER_SEC;  // Guarda o tempo gasto para a realização de operações
         printf("TESTE %u | TEMPO GASTO: %f\n", num_teste, tempo_total);  // Imprime o tempo gasto no console
@@ -254,7 +251,7 @@ void criacao_teste()
 {
     // Declarações
     TListaDeProcessos lista;
-    TProcesso *processo1;
+    TProcesso processo1;
     posicao N;  // Tamanho do vetor, linha 1
     unsigned int NLO;  // Número de linhas de operações, linha 2
     unsigned int Op;  // 0 = inserção, 1 = remoção, linha 3
@@ -266,7 +263,9 @@ void criacao_teste()
     
     for (int i = 1; i <= NUM_ARQUIVOS_TESTE; i++) // Função lê TODOS os arquivos de teste sucessivamente
     {
-        char* nome_arquivo = nome_arquivo_testes(i);
+        char nome_arquivo[25];
+        char* pnome_arquivo = nome_arquivo;
+        nome_arquivo_testes(i, pnome_arquivo);
         input = fopen(nome_arquivo, "r");
 
         /* Linha 1 */
@@ -282,7 +281,7 @@ void criacao_teste()
             fscanf(input, "%u %u", &Op, &Qt);
 
             start = clock();
-            realiza_operacoes(&lista, processo1, Op, Qt);
+            realiza_operacoes(&lista, &processo1, Op, Qt);
             end = clock();
             double tempo_total = (end - start) / CLOCKS_PER_SEC;  // Guarda o tempo gasto para a realização de operações
 
