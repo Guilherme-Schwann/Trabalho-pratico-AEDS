@@ -286,9 +286,9 @@ void criacao_teste()
             double tempo_total = (end - start) / CLOCKS_PER_SEC;  // Guarda o tempo gasto para a realização de operações
 
             // Registra número de teste e tempo total em arquivo output.txt
-            output = fopen("output.txt", "r+");
+            output = fopen("../output.txt", "r+");
             fseek(output, 0, SEEK_END);  // Feito para imprimir no final da lista
-            fprintf(output, "%u %f", num_teste, tempo_total);
+            fprintf(output, "%u %f\n", num_teste, tempo_total);
             fclose(output);
         }
 
