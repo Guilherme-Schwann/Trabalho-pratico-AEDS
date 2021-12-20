@@ -20,9 +20,9 @@
 void criacao_manual();
 void criacao_por_arquivo();
 void criacao_teste();
-char escolhe_arquivo();
+char* escolhe_arquivo();
+char* nome_arquivo_testes(unsigned int i);
 int repetir_teste();
-char nome_arquivo_testes(int i);
 void realiza_operacoes(TListaDeProcessos* lista, TProcesso* processo1, unsigned int Op, unsigned int Qt);
 void libera_lista(TListaDeProcessos* lista);
 
@@ -89,7 +89,7 @@ void realiza_operacoes(TListaDeProcessos* lista, TProcesso* processo1, unsigned 
 {
    if (Op == OP_INSERIR)
    {
-        for (int i = 0; i < Qt; i++)
+        for (unsigned int i = 0; i < Qt; i++)
         {
             *processo1 = inicializaProcesso();
             insereDado(lista, *processo1); 
@@ -98,7 +98,7 @@ void realiza_operacoes(TListaDeProcessos* lista, TProcesso* processo1, unsigned 
        
     if (Op == OP_REMOVER)
     {
-        for (int i = 0; i < Qt; i++)
+        for (unsigned int i = 0; i < Qt; i++)
         {
             if (lista->celulasDisp == 0) // Lista é vazia, não tem como fazer nenhuma remoção
             {
@@ -114,19 +114,19 @@ void realiza_operacoes(TListaDeProcessos* lista, TProcesso* processo1, unsigned 
     exit(1);
 }
 
-// Usado em criação por arquivo (2)
-char escolhe_arquivo()
+// Usado em criação por arquivo (2) -- TA DANDO ERRADO
+char* escolhe_arquivo()
 {
-    char nomeArquivo[25];
+    char *nomeArquivo;
     printf("Insira o nome do arquivo (com .txt): ");
-    scanf("%s", &nomeArquivo);
+    scanf("%s", nomeArquivo);
     return nomeArquivo;
 }
 
-// Usado em criação de arquivos teste (3)
-char nome_arquivo_testes(int i)
+// Usado em criação de arquivos teste (3) -- TA DANDO ERRADO
+char* nome_arquivo_testes(unsigned int i)
 {
-    char nome_arquivo[17];
+    char *nome_arquivo;
     switch (i)  /* Caso mais testes sejam criados, manutenção aqui é necessária */
     {
     case 1:
@@ -162,12 +162,11 @@ void criacao_manual()
 {
     TListaDeProcessos lista;
     TProcesso *processo1;
-    posicao N; // Tamanho do vetor
-    unsigned int NLO; // Número de linhas de operações
-    unsigned int Op; // 0 = inserção, 1 = remoção
-    unsigned int Qt; // Quantidade de vezes que a operação é realizada
-    int i;
-    clock_t start, end; // Clock
+    posicao N;  // Tamanho do vetor
+    unsigned int NLO;  // Número de linhas de operações
+    unsigned int Op;  // 0 = inserção, 1 = remoção
+    unsigned int Qt;  // Quantidade de vezes que a operação é realizada
+    clock_t start, end;  // Clock
 
     printf("Digite o tamanho do vetor: ");
     scanf("%u", &N);
@@ -178,7 +177,7 @@ void criacao_manual()
     scanf("%u", &NLO);
 
     unsigned int num_teste = 0;
-    for (i = 1; i <= NLO; i++) /* Sequências de operação */
+    for (unsigned int i = 1; i <= NLO; i++) /* Sequências de operação */
     {
         num_teste++;
         printf("-***************************-\n");
@@ -195,7 +194,7 @@ void criacao_manual()
         realiza_operacoes(&lista, processo1, Op, Qt);
         end = clock();
         double tempo_total = (end - start) / CLOCKS_PER_SEC; // Guarda o tempo gasto para a realização de operações
-        printf("TESTE %u | TEMPO GASTO: %f", num_teste, tempo_total); // Imprime o tempo gasto no console
+        printf("TESTE %u | TEMPO GASTO: %f\n", num_teste, tempo_total); // Imprime o tempo gasto no console
     }
     
     imprimeConteudo(&lista); // Impressão básica
@@ -206,16 +205,16 @@ void criacao_manual()
 void criacao_por_arquivo()
 {
     // Declarações 
-    char arquivo = escolhe_arquivo();
     TListaDeProcessos lista;
     TProcesso *processo1;
     posicao N;  // Tamanho do vetor, linha 1
     unsigned int NLO;  // Número de linhas de operações, linha 2
     unsigned int Op;  // 0 = inserção, 1 = remoção, linha 3
     unsigned int Qt;  // Quantidade de vezes que a operação é realizada, linha 3
-    int i;
     clock_t start, end;  // Clock
     FILE* input;  // Arquivo de entrada
+
+    char* arquivo = escolhe_arquivo();
 
     input = fopen(arquivo, "r");
     if (input == NULL)
@@ -233,7 +232,7 @@ void criacao_por_arquivo()
     fscanf(input, "%u", &NLO);  // Pega o número de linhas
 
     unsigned int num_teste = 0;
-    for (i = 0; i <= NLO; i++)  /* Linhas seguintes */
+    for (unsigned int i = 0; i <= NLO; i++)  /* Linhas seguintes */
     {
         num_teste++;
         fscanf(input, "%u %u", &Op, &Qt);
@@ -242,7 +241,7 @@ void criacao_por_arquivo()
         realiza_operacoes(&lista, processo1, Op, Qt);
         end = clock();
         double tempo_total = (end - start) / CLOCKS_PER_SEC;  // Guarda o tempo gasto para a realização de operações
-        printf("TESTE %u | TEMPO GASTO: %f", num_teste, tempo_total);  // Imprime o tempo gasto no console
+        printf("TESTE %u | TEMPO GASTO: %f\n", num_teste, tempo_total);  // Imprime o tempo gasto no console
     }
 
     fclose(input);
@@ -267,9 +266,8 @@ void criacao_teste()
     
     for (int i = 1; i <= NUM_ARQUIVOS_TESTE; i++) // Função lê TODOS os arquivos de teste sucessivamente
     {
-        char nome_arquivo = nome_arquivo_testes(i);
+        char* nome_arquivo = nome_arquivo_testes(i);
         input = fopen(nome_arquivo, "r");
-        free(nome_arquivo);
 
         /* Linha 1 */
         fscanf(input, "%u", &N);  // Pega o tamanho do vetor
@@ -278,7 +276,7 @@ void criacao_teste()
         /* Linha 2 */
         fscanf(input, "%u", &NLO);  // Pega o número de linhas
 
-        for (int j = 0; j <= NLO; j++)  /* Linhas seguintes */
+        for (unsigned int j = 0; j <= NLO; j++)  /* Linhas seguintes */
         {
             num_teste++;
             fscanf(input, "%u %u", &Op, &Qt);
