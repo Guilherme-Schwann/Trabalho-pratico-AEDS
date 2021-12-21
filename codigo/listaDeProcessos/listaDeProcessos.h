@@ -16,12 +16,12 @@ typedef struct {
     cursor primeiro; // Cursor que aponta para o primeiro item da lista
     cursor ultimo; // Cursor que aponta para o último item na lista
     cursor celulasDisp; // Cursor que aponta para o primeiro item da lista de células disponíveis
-    posicao maxTam; // Número máximo de itens possíveis na lista
+    int maxTam; // Número máximo de itens possíveis na lista
     posicao numCelOcupadas; // Número de células ocupadas na lista
 } TListaDeProcessos;
 
 /* Inicialização e verificação de posições ocupadas */
-void inicializaLista(TListaDeProcessos* plista, posicao N); // Inicializa a lista
+void inicializaLista(TListaDeProcessos* plista, int N); // Inicializa a lista
 int posOcupadas(TListaDeProcessos* plista); // Retorna o núm de posições ocupadas na lista
 
 /* Inserção, Remoção e impressão do conteúdo */

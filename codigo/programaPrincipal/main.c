@@ -5,166 +5,62 @@
  * Guilherme Augusto Schwann Wilke
  * Letícia Oliveira Silva
  * Lucas Barbosa Pena
- * 
+ *
  * Universidade Federal de Viçosa
  * --------------------------------
 */
 
-// Includes e Defines
+#include <stdio.h>
+#include <stdlib.h>
 #include "../listaDeProcessos/listaDeProcessos.h"
 #define OP_INSERIR 0
 #define OP_REMOVER 1
-#define NUM_ARQUIVOS_TESTE 6  // teste100000, teste200000, ..., teste600000
+#define NUM_ARQUIVOS_TESTE 6
 
-/* Declaração de funções */
 void criacao_manual();
 void criacao_por_arquivo();
 void criacao_teste();
+
+void realiza_operacoes(TListaDeProcessos* plista, unsigned int Op, unsigned int Qt);
 void escolhe_arquivo(char* parquivo);
 void nome_arquivo_testes(unsigned int i, char* pnome_arquivo);
-int repetir_teste();
-void realiza_operacoes(TListaDeProcessos* lista, TProcesso* processo1, unsigned int Op, unsigned int Qt);
 void libera_lista(TListaDeProcessos* lista);
 
-// Main
-int main()
-{
-    do
+int main() {
+    int menu = 0;
+
+    printf("Escolha um tipo de criacao de lista:\n");
+    printf("1: Criacao Manual | 2: Criacao por leitura de arquivo | 3: Criacao pelos testes 1-12\n");
+
+    while (menu != 1 && menu != 2 && menu != 3)
     {
-        int menu = 0;
-
-        printf("Escolha um tipo de criacao de lista:\n");
-        printf("1: Criacao Manual | 2: Criacao por leitura de arquivo | 3: Criacao pelos testes 1-12\n");
-
-        while (menu != 1 && menu != 2 && menu != 3)
-        {
-            scanf("%d", &menu);
-        }
-        if (menu == 1)
-        {
-            criacao_manual();
-        }
-        else if (menu == 2)
-        {
-            criacao_por_arquivo();
-        }
-        else  // if (menu == 3)
-        {
-            criacao_teste();
-        }
+        scanf("%d", &menu);
     }
-    while (repetir_teste());
-
+    if (menu == 1)
+    {
+        criacao_manual();
+    }
+    else if (menu == 2)
+    {
+        criacao_por_arquivo();
+    }
+    else  // if (menu == 3)
+    {
+        criacao_teste();
+    }
     return 0;
 }
 
-// Pergunta se o usuário deseja realizar outro teste com as listas.
-int repetir_teste()
-{
-    char voce_quer = 'R';
-    // Processo de repetição de teste
-    printf("Voce quer realizar outro teste? S / N\n");
-    while (voce_quer != 'S' && voce_quer != 'N')
-    {
-        scanf("%c", &voce_quer);
-    }
-    if (voce_quer == 'N')
-    {
-        return 0;
-    }
-    else
-    {
-        return 1;
-    }
-}
-
-// Libera o espaço de memória das listas de processos.
-void libera_lista(TListaDeProcessos* lista)
-{
-    free(lista);
-}
-
-// Realiza as operações de inserção e remoção
-void realiza_operacoes(TListaDeProcessos* lista, TProcesso* processo1, unsigned int Op, unsigned int Qt)
-{
-   if (Op == OP_INSERIR)
-   {
-        for (unsigned int i = 0; i < Qt; i++)
-        {
-            *processo1 = inicializaProcesso();
-            insereDado(lista, *processo1); 
-        }
-   }
-       
-    if (Op == OP_REMOVER)
-    {
-        for (unsigned int i = 0; i < Qt; i++)
-        {
-            if (lista->numCelOcupadas == 0) // Lista é vazia, não tem como fazer nenhuma remoção
-            {
-                return;
-            }
-            retiraPrimeiro(lista); 
-        }
-    }
-    return;
-
-    // Caso de erro
-    printf("Houve um erro ao realizar operacoes.\n");
-    exit(1);
-}
-
-// Usado em criação por arquivo
-void escolhe_arquivo(char* parquivo)
-{
-    printf("Insira o nome do arquivo (com .txt): ");
-    scanf("%s", parquivo);
-}
-
-// Usado em criação de arquivos teste (3) -- TA DANDO ERRADO
-void nome_arquivo_testes(unsigned int i, char* pnome_arquivo)
-{
-    switch (i)  /* Caso mais testes sejam criados, manutenção aqui é necessária */
-    {
-    case 1:
-        strcpy(pnome_arquivo, "../testes/teste100000.txt");
-        break;
-    case 2:
-        strcpy(pnome_arquivo, "../testes/teste200000.txt");
-        break;
-    case 3:
-        strcpy(pnome_arquivo, "../testes/teste300000.txt");
-        break;
-    case 4:
-        strcpy(pnome_arquivo, "../testes/teste400000.txt");
-        break;
-    case 5:
-        strcpy(pnome_arquivo, "../testes/teste500000.txt");
-        break;
-    case 6:
-        strcpy(pnome_arquivo, "../testes/teste600000.txt");
-        break;
-
-    // Caso de erro
-    default:
-        printf("Arquivo nao existe.\n");
-        exit(1);
-    }
-}
-
-// Processo de criação de lista guiado pelo usuário (I/O padrão)
-void criacao_manual()
-{
+void criacao_manual() {
     TListaDeProcessos lista;
-    TProcesso processo1;
-    posicao N;  // Tamanho do vetor
+    int N, i;  // Tamanho do vetor
     unsigned int NLO;  // Número de linhas de operações
     unsigned int Op;  // 0 = inserção, 1 = remoção
     unsigned int Qt;  // Quantidade de vezes que a operação é realizada
     clock_t start, end;  // Clock
 
     printf("Digite o tamanho do vetor: ");
-    scanf("%u", &N);
+    scanf("%d", &N);
 
     inicializaLista(&lista, N);
 
@@ -172,12 +68,12 @@ void criacao_manual()
     scanf("%u", &NLO);
 
     unsigned int num_teste = 0;
-    for (unsigned int i = 1; i <= NLO; i++) /* Sequências de operação */
+    for (i = 1; i <= NLO; i++) /* Sequências de operação */
     {
         num_teste++;
-        printf("-***************************-\n");
+        printf("-**************************-\n");
         printf("Sequencia de operacao no. %d \n", i);
-        printf("-***************************-\n");
+        printf("-**************************-\n");
         printf("  Qual operacao sera feita?  \n");
         printf("%d = Insercao      %d = Remocao\n", OP_INSERIR, OP_REMOVER);
         scanf("%u", &Op);
@@ -186,23 +82,18 @@ void criacao_manual()
         scanf("%u", &Qt);
 
         start = clock();
-        realiza_operacoes(&lista, &processo1, Op, Qt);
+        realiza_operacoes(&lista, Op, Qt);
         end = clock();
-        double tempo_total = (end - start) / CLOCKS_PER_SEC; // Guarda o tempo gasto para a realização de operações
+        double tempo_total = ((double) (end - start) / CLOCKS_PER_SEC); // Guarda o tempo gasto para a realização de operações
         printf("TESTE %u | TEMPO GASTO: %f\n", num_teste, tempo_total); // Imprime o tempo gasto no console
     }
-    
-    imprimeConteudo(&lista); // Impressão básica
+
     libera_lista(&lista); // Libera espaço de memória
 }
-
-// Processo de criação de lista a partir de um arquivo especificado pelo usuário
-void criacao_por_arquivo()
-{
-    // Declarações 
+void criacao_por_arquivo() {
+    // Declarações
     TListaDeProcessos lista;
-    TProcesso processo1;
-    posicao N;  // Tamanho do vetor, linha 1
+    int N;  // Tamanho do vetor, linha 1
     unsigned int NLO;  // Número de linhas de operações, linha 2
     unsigned int Op;  // 0 = inserção, 1 = remoção, linha 3
     unsigned int Qt;  // Quantidade de vezes que a operação é realizada, linha 3
@@ -217,42 +108,36 @@ void criacao_por_arquivo()
     if (input == NULL)
     {
         printf("Erro na abertura do arquivo de teste.\n");
-        exit(1);  // aborta o programa
+        return;  // aborta a execução
     }
-    
+
     /* Linha 1 */
-    fscanf(input, "%u", &N);  // Pega o tamanho do vetor
+    fscanf(input, "%d", &N);  // Pega o tamanho do vetor
 
     inicializaLista(&lista, N);
-    
+
     /* Linha 2 */
     fscanf(input, "%u", &NLO);  // Pega o número de linhas
 
     unsigned int num_teste = 0;
-    for (unsigned int i = 0; i <= NLO; i++)  /* Linhas seguintes */
+    for (unsigned int i = 0; i < NLO; i++)  /* Linhas seguintes */
     {
         num_teste++;
         fscanf(input, "%u %u", &Op, &Qt);
 
         start = clock();
-        realiza_operacoes(&lista, &processo1, Op, Qt);
+        realiza_operacoes(&lista, Op, Qt);
         end = clock();
-        double tempo_total = (end - start) / CLOCKS_PER_SEC;  // Guarda o tempo gasto para a realização de operações
+        double tempo_total = ((double)(end - start) / CLOCKS_PER_SEC);  // Guarda o tempo gasto para a realização de operações
         printf("TESTE %u | TEMPO GASTO: %f\n", num_teste, tempo_total);  // Imprime o tempo gasto no console
     }
 
     fclose(input);
-    imprimeConteudo(&lista);  // Impressão básica
     libera_lista(&lista);  // Libera espaço de memória
 }
-
-// Processo de criação de lista automatizado. Lê os arquivos de teste disponibilizados.
-void criacao_teste()
-{
-    // Declarações
+void criacao_teste() {
     TListaDeProcessos lista;
-    TProcesso processo1;
-    posicao N;  // Tamanho do vetor, linha 1
+    int N;  // Tamanho do vetor, linha 1
     unsigned int NLO;  // Número de linhas de operações, linha 2
     unsigned int Op;  // 0 = inserção, 1 = remoção, linha 3
     unsigned int Qt;  // Quantidade de vezes que a operação é realizada, linha 3
@@ -260,30 +145,30 @@ void criacao_teste()
     clock_t start, end;  // Clock
     FILE* input;  // Arquivo de entrada
     FILE* output;  // Arquivo de saída
-    
+
     for (int i = 1; i <= NUM_ARQUIVOS_TESTE; i++) // Função lê TODOS os arquivos de teste sucessivamente
     {
         char nome_arquivo[25];
-        char* pnome_arquivo = nome_arquivo;
+        char *pnome_arquivo = nome_arquivo;
         nome_arquivo_testes(i, pnome_arquivo);
         input = fopen(nome_arquivo, "r");
 
         /* Linha 1 */
-        fscanf(input, "%u", &N);  // Pega o tamanho do vetor
+        fscanf(input, "%d", &N);  // Pega o tamanho do vetor
         inicializaLista(&lista, N);
-        
+
         /* Linha 2 */
         fscanf(input, "%u", &NLO);  // Pega o número de linhas
 
-        for (unsigned int j = 0; j <= NLO; j++)  /* Linhas seguintes */
+        for (int j = 0; j < NLO; j++)  /* Linhas seguintes */
         {
             num_teste++;
             fscanf(input, "%u %u", &Op, &Qt);
 
             start = clock();
-            realiza_operacoes(&lista, &processo1, Op, Qt);
+            realiza_operacoes(&lista, Op, Qt);
             end = clock();
-            double tempo_total = (end - start) / CLOCKS_PER_SEC;  // Guarda o tempo gasto para a realização de operações
+            double tempo_total = ((double) (end - start) / CLOCKS_PER_SEC);  // Guarda o tempo gasto para a realização de operações
 
             // Registra número de teste e tempo total em arquivo output.txt
             output = fopen("../output.txt", "r+");
@@ -293,7 +178,78 @@ void criacao_teste()
         }
 
         fclose(input);
-        imprimeConteudo(&lista);  // Impressão básica
+        // imprimeConteudo(&lista);  // Impressão básica
         libera_lista(&lista);  // Libera espaço de memória
     }
+}
+
+void realiza_operacoes(TListaDeProcessos* plista, unsigned int Op, unsigned int Qt) {
+    int i;
+    TProcesso processo;
+    if (Op == OP_INSERIR) {
+        for (i = 0; i < Qt; i++)
+        {
+            if (plista->numCelOcupadas == plista->maxTam) {
+                printf("Tamanho maximo alcancado, insercao bloqueada.");
+                return;
+            }
+            processo = inicializaProcesso();
+            if (i == 0){
+                setPid(&processo, 1000);
+            }
+            insereDado(plista, processo);
+        }
+    } else if (Op == OP_REMOVER) {
+        for (i = 0; i < Qt; i++)
+        {
+            if (plista->numCelOcupadas == 0) // Lista é vazia, não tem como fazer nenhuma remoção
+            {
+                printf("Lista vazia, remocao bloqueada.");
+                return;
+            }
+            retiraPrimeiro(plista);
+        }
+    } else {
+        printf("Operacao invalida.");
+    }
+}
+
+void escolhe_arquivo(char* parquivo) {
+    printf("Insira o nome do arquivo (com .txt): ");
+    scanf("%s", parquivo);
+}
+
+void nome_arquivo_testes(unsigned int i, char* pnome_arquivo)
+{
+    switch (i)  /* Caso mais testes sejam criados, manutenção aqui é necessária */
+    {
+        case 1:
+            strcpy(pnome_arquivo, "../testes/teste100000.txt");
+            break;
+        case 2:
+            strcpy(pnome_arquivo, "../testes/teste200000.txt");
+            break;
+        case 3:
+            strcpy(pnome_arquivo, "../testes/teste300000.txt");
+            break;
+        case 4:
+            strcpy(pnome_arquivo, "../testes/teste400000.txt");
+            break;
+        case 5:
+            strcpy(pnome_arquivo, "../testes/teste500000.txt");
+            break;
+        case 6:
+            strcpy(pnome_arquivo, "../testes/teste600000.txt");
+            break;
+
+            // Caso de erro
+        default:
+            printf("Arquivo nao existe.\n");
+            exit(1);
+    }
+}
+
+void libera_lista(TListaDeProcessos* lista)
+{
+    free(lista);
 }

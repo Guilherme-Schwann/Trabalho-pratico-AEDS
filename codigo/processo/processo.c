@@ -24,7 +24,7 @@ int gera_numero_entre(unsigned int numero_min, unsigned int numero_max) {
 }
 
 TProcesso registraHorario(TProcesso* processo) {
-    time_t instante = time(NULL);
+    time_t instante = time(0);
     struct tm *tempoInfo = localtime(&instante);
 
     // Guarda o horário de criação no formato DD MM AAAA HH:MM:SS

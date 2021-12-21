@@ -8,7 +8,7 @@ int achaAnterior(TListaDeProcessos* plista, TProcesso processo, Celula* vendoCel
 void getConteudo(TProcesso processo);
 
 /* Inicialização da lista */
-void inicializaLista(TListaDeProcessos* plista, posicao N) {
+void inicializaLista(TListaDeProcessos* plista, int N) {
     plista->listaDeProcessos = (Celula*) malloc(sizeof(Celula) * N); // Aloca memória correspondente a N celulas
     plista->primeiro = 0; // Aponta o cursor primeiro para a posição 0
     plista->ultimo = 0; // Aponta o cursor último para a posição 0
@@ -32,7 +32,7 @@ void insereDado(TListaDeProcessos* plista, TProcesso processo) {
     if (plista->numCelOcupadas > 0) {
 
         // A célula em questão será inserida na primeira posição?
-        if (processo.pid <= plista->listaDeProcessos[plista->primeiro].processo.pid) {
+        if (processo.pid < plista->listaDeProcessos[plista->primeiro].processo.pid) {
             // Inserção na primeira posição da lista:
             plista->listaDeProcessos[plista->primeiro].ant = plista->celulasDisp;
             plista->celulasDisp = plista->listaDeProcessos[plista->celulasDisp].prox;
