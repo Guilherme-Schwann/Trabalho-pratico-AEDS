@@ -10,6 +10,8 @@
  * --------------------------------
 */
 
+/* Includes e Defines */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "../listaDeProcessos/listaDeProcessos.h"
@@ -17,15 +19,19 @@
 #define OP_REMOVER 1
 #define NUM_ARQUIVOS_TESTE 6
 
+/* Declarações */
+
 void criacao_manual();
 void criacao_por_arquivo();
 void criacao_teste();
-
 void realiza_operacoes(TListaDeProcessos* plista, unsigned int Op, unsigned int Qt);
 void escolhe_arquivo(char* parquivo);
 void nome_arquivo_testes(unsigned int i, char* pnome_arquivo);
 void libera_lista(TListaDeProcessos* lista);
 
+/* Funções */
+
+// Main
 int main() {
     int menu = 0;
 
@@ -51,6 +57,7 @@ int main() {
     return 0;
 }
 
+// Criação de lista a partir de valores dados pelo usuário
 void criacao_manual() {
     TListaDeProcessos lista;
     int N, i;  // Tamanho do vetor
@@ -58,7 +65,7 @@ void criacao_manual() {
     unsigned int Op;  // 0 = inserção, 1 = remoção
     unsigned int Qt;  // Quantidade de vezes que a operação é realizada
     clock_t start, end;  // Clock
-    int pergunta;
+    int pergunta;  // Usado para impressão da lista
 
     printf("Digite o tamanho do vetor: ");
     scanf("%d", &N);
@@ -87,6 +94,8 @@ void criacao_manual() {
         end = clock();
         double tempo_total = ((double) (end - start) / CLOCKS_PER_SEC); // Guarda o tempo gasto para a realização de operações
         printf("TESTE %u | TEMPO GASTO: %f\n", num_teste, tempo_total); // Imprime o tempo gasto no console
+
+        // Impressão da lista no console
         printf("Deseja imprimir a lista no console?\nInsira 1 para 'sim' ou 0 para 'nao':\n");
         scanf("%d", &pergunta);
         if (pergunta == 1) {
@@ -96,6 +105,8 @@ void criacao_manual() {
 
     libera_lista(&lista); // Libera espaço de memória
 }
+
+// Criação de lista a partir de especificações de um arquivo
 void criacao_por_arquivo() {
     // Declarações
     TListaDeProcessos lista;
@@ -115,7 +126,7 @@ void criacao_por_arquivo() {
     if (input == NULL)
     {
         printf("Erro na abertura do arquivo de teste.\n");
-        return;  // aborta a execução
+        return;  // Aborta a execução
     }
 
     /* Linha 1 */
@@ -137,6 +148,8 @@ void criacao_por_arquivo() {
         end = clock();
         double tempo_total = ((double)(end - start) / CLOCKS_PER_SEC);  // Guarda o tempo gasto para a realização de operações
         printf("TESTE %u | TEMPO GASTO: %f\n", num_teste, tempo_total);  // Imprime o tempo gasto no console
+
+        // Impressão da lista no console
         printf("Deseja imprimir a lista no console?\nInsira 1 para 'sim' ou 0 para 'nao':\n");
         scanf("%d", &pergunta);
         if (pergunta == 1) {
@@ -147,6 +160,8 @@ void criacao_por_arquivo() {
     fclose(input);
     libera_lista(&lista);  // Libera espaço de memória
 }
+
+// Criação de lista a partir dos testes
 void criacao_teste() {
     TListaDeProcessos lista;
     int N;  // Tamanho do vetor, linha 1
@@ -190,7 +205,6 @@ void criacao_teste() {
         }
 
         fclose(input);
-        // imprimeConteudo(&lista);  // Impressão básica
         libera_lista(&lista);  // Libera espaço de memória
     }
 }
