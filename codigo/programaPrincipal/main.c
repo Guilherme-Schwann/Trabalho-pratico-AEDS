@@ -79,9 +79,9 @@ void criacao_manual() {
     for (i = 1; i <= NLO; i++) /* Sequências de operação */
     {
         num_teste++;
-        printf("-**************************-\n");
+        printf("------------------------\n");
         printf("Sequencia de operacao no. %d \n", i);
-        printf("-**************************-\n");
+        printf("------------------------\n");
         printf("  Qual operacao sera feita?  \n");
         printf("%d = Insercao      %d = Remocao\n", OP_INSERIR, OP_REMOVER);
         scanf("%u", &Op);
