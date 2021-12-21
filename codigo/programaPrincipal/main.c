@@ -194,9 +194,6 @@ void realiza_operacoes(TListaDeProcessos* plista, unsigned int Op, unsigned int 
                 return;
             }
             processo = inicializaProcesso();
-            if (i == 0){
-                setPid(&processo, 1000);
-            }
             insereDado(plista, processo);
         }
     } else if (Op == OP_REMOVER) {
