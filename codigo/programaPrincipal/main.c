@@ -209,6 +209,7 @@ void criacao_teste() {
     }
 }
 
+// Realiza as operações de inserção e remoção
 void realiza_operacoes(TListaDeProcessos* plista, unsigned int Op, unsigned int Qt) {
     int i;
     TProcesso processo;
@@ -237,11 +238,13 @@ void realiza_operacoes(TListaDeProcessos* plista, unsigned int Op, unsigned int 
     }
 }
 
+// Retorna nome de arquivo para opção 2 no menu 
 void escolhe_arquivo(char* parquivo) {
     printf("Insira o nome do arquivo (com .txt): ");
     scanf("%s", parquivo);
 }
 
+// Retorna os nomes dos arquivos necessários para a implementação da opção 3 no menu
 void nome_arquivo_testes(unsigned int i, char* pnome_arquivo)
 {
     switch (i)  /* Caso mais testes sejam criados, manutenção aqui é necessária */
@@ -272,6 +275,7 @@ void nome_arquivo_testes(unsigned int i, char* pnome_arquivo)
     }
 }
 
+// Libera espaço de memória na lista
 void libera_lista(TListaDeProcessos* lista)
 {
     free(lista);
