@@ -61,7 +61,7 @@ void insereDado(TListaDeProcessos* plista, TProcesso processo) {
         }
     } else {
         // Inserção na lista vazia:
-        plista->celulasDisp = plista->listaDeProcessos[plista->celulasDisp].prox;
+        plista->celulasDisp = plista->listaDeProcessos[plista->celulasDisp].prox; // Passa o cursor celulasDisp para a próxima célula
         plista->listaDeProcessos[plista->primeiro].prox = -1;
     }
     plista->numCelOcupadas += 1;
@@ -69,16 +69,19 @@ void insereDado(TListaDeProcessos* plista, TProcesso processo) {
 
 /* Desconecta a primeira célula da lista de processos e associa-a à lista de células disponíveis */
 void retiraPrimeiro(TListaDeProcessos* plista) {
+    // A lista tem apenas uma célula?
     if (plista->numCelOcupadas > 1) {
-        plista->primeiro = plista->listaDeProcessos[plista->primeiro].prox;
-        plista->listaDeProcessos[plista->listaDeProcessos[plista->primeiro].ant].prox = plista->celulasDisp;
-        plista->celulasDisp = plista->listaDeProcessos[plista->primeiro].ant;
-        plista->listaDeProcessos[plista->primeiro].ant = -1;
+        // Caso a lista tenha mais de uma célula:
+        plista->primeiro = plista->listaDeProcessos[plista->primeiro].prox; // Define o cursor primeiro para a próxima célula
+        plista->listaDeProcessos[plista->listaDeProcessos[plista->primeiro].ant].prox = plista->celulasDisp; // Define o próx da antiga primeira célula como a celulasDisp
+        plista->celulasDisp = plista->listaDeProcessos[plista->primeiro].ant; // Define o cursor celulasDisp para a antiga primeira célula
+        plista->listaDeProcessos[plista->primeiro].ant = -1; // Encerra conexão da primeira célula com a anterior
     } else if (plista->numCelOcupadas == 1){
-        plista->listaDeProcessos[plista->primeiro].prox = plista->celulasDisp;
-        plista->celulasDisp = plista->primeiro;
-        plista->primeiro = 0;
-        plista->ultimo = 0;
+        // Retirando a última célula da lista:
+        plista->listaDeProcessos[plista->primeiro].prox = plista->celulasDisp; // Define o próx da antiga primeira célula como a celulasDisp
+        plista->celulasDisp = plista->primeiro; // Define o cursor celulasDisp para a antiga primeira célula
+        plista->primeiro = 0; // Define cursor primeiro para a posição 0
+        plista->ultimo = 0; // Define cursor ultimo para a posição 0
     }
     plista->numCelOcupadas -= 1;
 }
@@ -87,12 +90,13 @@ void retiraPrimeiro(TListaDeProcessos* plista) {
 void imprimeConteudo(TListaDeProcessos* plista) {
     if (plista->numCelOcupadas > 0) {
         int i;
-        Celula *vendocelula = &(plista->listaDeProcessos[plista->primeiro]);
+        Celula *vendocelula = &(plista->listaDeProcessos[plista->primeiro]); // Vê uma célula por vez na lista começando pela primeira
+        // Para todas as células na lista:
         for (i = 0; i < plista->numCelOcupadas; i++) {
-            getConteudo(vendocelula->processo);
+            getConteudo(vendocelula->processo); // Função que chama todos os métodos gets do TAD Processo
             printf("\n");
-            if (vendocelula->prox != -1)
-                vendocelula = &(plista->listaDeProcessos[vendocelula->prox]);
+            if (vendocelula->prox != -1) // Se não for a última célula da lista...
+                vendocelula = &(plista->listaDeProcessos[vendocelula->prox]); // ...continua vendo as próximas
         }
     }
 }
@@ -102,12 +106,13 @@ void imprimeConteudo(TListaDeProcessos* plista) {
 /* Configura as células disponíveis quando inicializa-se uma lista vazia */
 void inicializaCelulasDisp(TListaDeProcessos* plista) {
     int i;
-
+    // Para todas as células da lista:
     for (i = 0; i < plista->maxTam; i++) {
         if (i == plista->maxTam - 1) {
+            // Caso seja a última célula:
             plista->listaDeProcessos[i].prox = -1;
-        }
-        else {
+        } else {
+            // Caso não seja a última célula:
             plista->listaDeProcessos[i].ant = -1;
             plista->listaDeProcessos[i].prox = i+1;
         }
@@ -117,16 +122,22 @@ void inicializaCelulasDisp(TListaDeProcessos* plista) {
 /* Encontra a célula anterior à célula a ser inserida na lista, baseada em seu PID */
 int achaAnterior(TListaDeProcessos* plista, TProcesso processo, Celula* vendoCelula) {
     int i;
+    // Para todas as células na lista:
     for (i = 0; i < plista->numCelOcupadas; i++) {
+        // Caso a célula tenha o PID do processo menor ou igual ao PID da célula que queremos inserir...
         if (processo.pid >= vendoCelula->processo.pid) {
+            // ...e sua próxima célula não seja igual a si mesma...
             if (vendoCelula->processo.pid != plista->listaDeProcessos[vendoCelula->prox].processo.pid)
                 break;
         }
         vendoCelula = &plista->listaDeProcessos[vendoCelula->prox];
     }
+    // Se a célula anterior for a primeira célula:
     if (vendoCelula->ant == -1) {
+        // ...retorna a primeira célula
         return plista->primeiro;
     } else {
+        // ...retorna a célula anterior
         return plista->listaDeProcessos[vendoCelula->ant].prox;
     }
 }
