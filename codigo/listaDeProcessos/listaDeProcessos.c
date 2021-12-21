@@ -90,7 +90,7 @@ void imprimeConteudo(TListaDeProcessos* plista) {
         Celula *vendocelula = &(plista->listaDeProcessos[plista->primeiro]);
         for (i = 0; i < plista->numCelOcupadas; i++) {
             getConteudo(vendocelula->processo);
-            printf("ant: %d | prox: %d\n", vendocelula->ant, vendocelula->prox); //RETIRARRRR
+            printf("\n");
             if (vendocelula->prox != -1)
                 vendocelula = &(plista->listaDeProcessos[vendocelula->prox]);
         }

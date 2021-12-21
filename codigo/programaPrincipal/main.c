@@ -58,6 +58,7 @@ void criacao_manual() {
     unsigned int Op;  // 0 = inserção, 1 = remoção
     unsigned int Qt;  // Quantidade de vezes que a operação é realizada
     clock_t start, end;  // Clock
+    int pergunta;
 
     printf("Digite o tamanho do vetor: ");
     scanf("%d", &N);
@@ -86,6 +87,11 @@ void criacao_manual() {
         end = clock();
         double tempo_total = ((double) (end - start) / CLOCKS_PER_SEC); // Guarda o tempo gasto para a realização de operações
         printf("TESTE %u | TEMPO GASTO: %f\n", num_teste, tempo_total); // Imprime o tempo gasto no console
+        printf("Deseja imprimir a lista no console?\nInsira 1 para 'sim' ou 0 para 'nao':\n");
+        scanf("%d", &pergunta);
+        if (pergunta == 1) {
+            imprimeConteudo(&lista);
+        }
     }
 
     libera_lista(&lista); // Libera espaço de memória
@@ -99,6 +105,7 @@ void criacao_por_arquivo() {
     unsigned int Qt;  // Quantidade de vezes que a operação é realizada, linha 3
     clock_t start, end;  // Clock
     FILE* input;  // Arquivo de entrada
+    int pergunta;
 
     char arquivo[25];
     char* parquivo = arquivo;
@@ -130,6 +137,11 @@ void criacao_por_arquivo() {
         end = clock();
         double tempo_total = ((double)(end - start) / CLOCKS_PER_SEC);  // Guarda o tempo gasto para a realização de operações
         printf("TESTE %u | TEMPO GASTO: %f\n", num_teste, tempo_total);  // Imprime o tempo gasto no console
+        printf("Deseja imprimir a lista no console?\nInsira 1 para 'sim' ou 0 para 'nao':\n");
+        scanf("%d", &pergunta);
+        if (pergunta == 1) {
+            imprimeConteudo(&lista);
+        }
     }
 
     fclose(input);
